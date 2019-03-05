@@ -1,0 +1,20 @@
+<phpunit
+	bootstrap="tests/bootstrap.php"
+	colors="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+	convertErrorsToExceptions="true"
+	stderr="true"
+	verbose="true">
+	<testsuite name="Application Tests">
+		<directory>tests</directory>
+	</testsuite>
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">app</directory>
+		</whitelist>
+	</filter>
+	<php>
+		<const name="PHPUNIT_RUN" value="true"/>
+	</php>
+</phpunit>

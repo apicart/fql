@@ -1,0 +1,35 @@
+{
+	"name": "apicart/fql",
+	"description": "Filter Query Language",
+	"keywords": ["apicart", "php", "search", "tokenizer", "query", "AST", "parser", "filters"],
+	"license": "MIT",
+	"require": {
+		"php": ">=7.2"
+	},
+	"require-dev": {
+		"phpstan/phpstan": "^0.11",
+		"phpstan/phpstan-strict-rules": "^0.11",
+		"phpunit/phpunit": "^7.5",
+		"symplify/easy-coding-standard": "^5.4"
+	},
+	"autoload": {
+		"psr-4": {
+			"Apicart\\FQL\\": "src"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Apicart\\FQL\\Tests\\": "tests"
+		}
+	},
+	"scripts": {
+		"complete-check": [
+			"phpunit",
+			"@check-cs",
+			"@phpstan"
+		],
+		"check-cs": "vendor/bin/ecs check src tests",
+		"fix-cs": "vendor/bin/ecs check src tests --fix",
+		"phpstan": "vendor/bin/phpstan analyse src tests --level max --configuration phpstan.neon"
+	}
+}

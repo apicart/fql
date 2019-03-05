@@ -1,0 +1,50 @@
+language: php
+
+matrix:
+  include:
+    - php: 7.2
+      env:
+        - PHPUNIT_FLAGS="--coverage-clover coverage.xml"
+        - COMPOSER_FLAGS=""
+    - php: 7.2
+      env:
+        - CODING_STANDARD=true
+        - COMPOSER_FLAGS=""
+    - php: 7.2
+      env:
+        - PHPSTAN=true
+        - COMPOSER_FLAGS=""
+    - php: 7.3
+      env:
+        - PHPUNIT_FLAGS="--coverage-clover coverage.xml"
+        - COMPOSER_FLAGS="--ignore-platform-reqs"
+    - php: 7.3
+      env:
+        - CODING_STANDARD=true
+        - COMPOSER_FLAGS="--ignore-platform-reqs"
+    - php: 7.3
+      env:
+        - PHPSTAN=true
+        - COMPOSER_FLAGS="--ignore-platform-reqs"
+
+install:
+  - composer install $COMPOSER_FLAGS
+
+script:
+  - vendor/bin/phpunit $PHPUNIT_FLAGS
+
+  # static analysis
+  - if [[ $CODING_STANDARD != "" ]]; then vendor/bin/ecs check src tests; fi
+  - if [[ $PHPSTAN != "" ]]; then vendor/bin/phpstan analyse src tests --level max --configuration phpstan.neon; fi
+
+after_script:
+  # upload coverage.xml file to Scrutinizer to analyze it
+  - |
+    if [[ "$PHPUNIT_FLAGS" != "" ]]; then
+      wget https://scrutinizer-ci.com/ocular.phar
+      php ocular.phar code-coverage:upload --format=php-clover coverage.xml
+    fi
+
+# do not send success notifications, they have no value
+notifications:
+  email: never
