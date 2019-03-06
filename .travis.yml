@@ -8,10 +8,6 @@ matrix:
         - COMPOSER_FLAGS=""
     - php: 7.2
       env:
-        - CODING_STANDARD=true
-        - COMPOSER_FLAGS=""
-    - php: 7.2
-      env:
         - PHPSTAN=true
         - COMPOSER_FLAGS=""
     - php: 7.3
@@ -32,8 +28,6 @@ install:
 
 script:
   - vendor/bin/phpunit $PHPUNIT_FLAGS
-
-  # static analysis
   - if [[ $CODING_STANDARD != "" ]]; then vendor/bin/ecs check src tests; fi
   - if [[ $PHPSTAN != "" ]]; then vendor/bin/phpstan analyse src tests --level max --configuration phpstan.neon; fi
 
@@ -45,6 +39,5 @@ after_script:
       php ocular.phar code-coverage:upload --format=php-clover coverage.xml
     fi
 
-# do not send success notifications, they have no value
 notifications:
   email: never

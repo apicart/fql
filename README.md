@@ -8,7 +8,7 @@
 
 Write filter query as simple string via Filter Query Language (FQL) syntax. Filter query will be parsed into easy-to-use syntax tree.
 
-**Simple FQL example:**
+**Some FQL query example:**
 
 `q:"samsung" AND introducedAt:["2018-01-01 00:00:00" TO NOW] AND (type:tv OR type:mobile)`
 

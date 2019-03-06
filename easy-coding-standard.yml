@@ -34,35 +34,35 @@ services:
 
 parameters:
     indentation: tab
-    exclude_checkers:
-        - PHP_CodeSniffer\Standards\PSR2\Sniffs\ControlStructures\ControlStructureSpacingSniff
-        - Symplify\CodingStandard\Sniffs\DependencyInjection\NoClassInstantiationSniff
-        - Symplify\CodingStandard\Sniffs\Property\DynamicPropertySniff
-        - SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff
-        - PhpCsFixer\Fixer\Operator\NewWithBracesFixer
-        - PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer
-        - Symplify\CodingStandard\Fixer\ClassNotation\LastPropertyAndFirstMethodSeparationFixer
-        - PhpCsFixer\Fixer\Basic\BracesFixer
-        - PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer
-        - PHP_CodeSniffer\Standards\Squiz\Sniffs\Functions\MultiLineFunctionDeclarationSniff
-        - PhpCsFixer\Fixer\LanguageConstruct\DeclareEqualNormalizeFixer
-        - Symplify\CodingStandard\Sniffs\CleanCode\ForbiddenStaticFunctionSniff
-        - PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\SuperfluousWhitespaceSniff
-        - Symplify\CodingStandard\Sniffs\ControlStructure\SprintfOverContactSniff
-        - Symplify\CodingStandard\Sniffs\CleanCode\ForbiddenReferenceSniff
-        - Symplify\CodingStandard\Sniffs\CleanCode\CognitiveComplexitySniff
-        - PhpCsFixer\Fixer\ClassNotation\SelfAccessorFixer
-        - Symplify\CodingStandard\Sniffs\Architecture\ExplicitExceptionSniff
-        - Symplify\CodingStandard\Fixer\Naming\PropertyNameMatchingTypeFixer
-        - SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff
-        - SlamCsFixer\FinalInternalClassFixer
-        - Symplify\CodingStandard\Fixer\Order\PrivateMethodOrderByUseFixer
-        - PhpCsFixer\Fixer\PhpUnit\PhpUnitStrictFixer
-        - Symplify\CodingStandard\Sniffs\Commenting\VarConstantCommentSniff
     skip:
+        PHP_CodeSniffer\Standards\PSR2\Sniffs\ControlStructures\ControlStructureSpacingSniff:
+        Symplify\CodingStandard\Sniffs\DependencyInjection\NoClassInstantiationSniff:
+        Symplify\CodingStandard\Sniffs\Property\DynamicPropertySniff:
+        SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
+        PhpCsFixer\Fixer\Operator\NewWithBracesFixer:
+        PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer:
+        Symplify\CodingStandard\Fixer\ClassNotation\LastPropertyAndFirstMethodSeparationFixer:
+        PhpCsFixer\Fixer\Basic\BracesFixer:
+        PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer:
+        PHP_CodeSniffer\Standards\Squiz\Sniffs\Functions\MultiLineFunctionDeclarationSniff:
+        PhpCsFixer\Fixer\LanguageConstruct\DeclareEqualNormalizeFixer:
+        Symplify\CodingStandard\Sniffs\CleanCode\ForbiddenStaticFunctionSniff:
+        PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\SuperfluousWhitespaceSniff:
+        Symplify\CodingStandard\Sniffs\ControlStructure\SprintfOverContactSniff:
+        Symplify\CodingStandard\Sniffs\CleanCode\ForbiddenReferenceSniff:
+        Symplify\CodingStandard\Sniffs\CleanCode\CognitiveComplexitySniff:
+        PhpCsFixer\Fixer\ClassNotation\SelfAccessorFixer:
+        Symplify\CodingStandard\Sniffs\Architecture\ExplicitExceptionSniff:
+        Symplify\CodingStandard\Fixer\Naming\PropertyNameMatchingTypeFixer:
+        SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff:
+        SlamCsFixer\FinalInternalClassFixer:
+        Symplify\CodingStandard\Fixer\Order\PrivateMethodOrderByUseFixer:
+        Symplify\CodingStandard\Sniffs\Commenting\VarConstantCommentSniff:
+        Symplify\CodingStandard\Sniffs\Architecture\DuplicatedClassShortNameSniff:
         PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:
             - tests/Tokenizer/FullTokenizerTest.php
             - tests/IntegrationTest.php
         PhpCsFixer\Fixer\PhpUnit\PhpUnitStrictFixer:
             - tests/Tokenizer/FullTokenizerTest.php
+            - tests/Tokenizer/FullTest.php
             - tests/IntegrationTest.php
