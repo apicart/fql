@@ -1,17 +1,17 @@
 <phpunit
-	bootstrap="tests/bootstrap.php"
-	colors="true"
-	convertNoticesToExceptions="true"
-	convertWarningsToExceptions="true"
-	convertErrorsToExceptions="true"
-	stderr="true"
-	verbose="true">
+		bootstrap="tests/bootstrap.php"
+		colors="true"
+		convertNoticesToExceptions="true"
+		convertWarningsToExceptions="true"
+		convertErrorsToExceptions="true"
+		stderr="true"
+		verbose="true">
 	<testsuite name="Application Tests">
 		<directory>tests</directory>
 	</testsuite>
 	<filter>
 		<whitelist processUncoveredFilesFromWhitelist="true">
-			<directory suffix=".php">app</directory>
+			<directory suffix=".php">src</directory>
 		</whitelist>
 	</filter>
 	<php>
