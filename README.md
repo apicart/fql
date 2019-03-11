@@ -1,10 +1,22 @@
-# Apicart/FQL (Filter Query Language)
-
-[![Build Status](https://img.shields.io/travis/apicart/fql.svg?style=flat-square)](https://travis-ci.org/apicart/fql)
-[![Quality Score](https://img.shields.io/scrutinizer/g/apicart/fql.svg?style=flat-square)](https://scrutinizer-ci.com/g/apicart/fql)
-[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/apicart/fql.svg?style=flat-square)](https://scrutinizer-ci.com/g/apicart/fql)
-[![Downloads](https://img.shields.io/packagist/dt/apicart/fql.svg?style=flat-square)](https://packagist.org/packages/apicart/fql)
-[![Latest stable](https://img.shields.io/github/tag/apicart/fql.svg?style=flat-square)](https://packagist.org/packages/apicart/fql)
+<h1 align="center">
+  Apicart/FQL (Filter Query Language)
+  <br>
+  <a href="https://travis-ci.org/apicart/fql">
+    <img src="https://img.shields.io/travis/apicart/fql.svg?style=flat-square" alt="Build Status">
+  </a>
+  <a href="https://scrutinizer-ci.com/g/apicart/fql">
+    <img src="https://img.shields.io/scrutinizer/g/apicart/fql.svg?style=flat-square" alt="Quality Score">
+  </a>
+  <a href="https://scrutinizer-ci.com/g/apicart/fql">
+    <img src="https://img.shields.io/scrutinizer/coverage/g/apicart/fql.svg?style=flat-square" alt="Code Coverage">
+  </a>
+  <a href="https://packagist.org/packages/apicart/fql">
+    <img src="https://img.shields.io/packagist/dt/apicart/fql.svg?style=flat-square" alt="Downloads">
+  </a>
+  <a href="https://packagist.org/packages/apicart/fql">
+    <img src="https://img.shields.io/github/tag/apicart/fql.svg?style=flat-square" alt="Latest stable">
+  </a>
+</h1>
 
 Write filter query as simple string via Filter Query Language (FQL) syntax. Filter query will be parsed into easy-to-use syntax tree.
 
