@@ -173,6 +173,7 @@ final class Parser implements ParserInterface
 
 	public function ignoreLogicalNotOperatorsPrecedingPreferenceOperator(): void
 	{
+		/** @var Token[] $precedingOperators */
 		$precedingOperators = $this->ignorePrecedingOperators(self::$tokenShortcuts['operatorNot']);
 
 		if ($precedingOperators !== []) {
