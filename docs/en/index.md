@@ -72,6 +72,8 @@ final class ItemFilterResolver extends AbstractFilterResolver
 }
 ```
 
+*Note: If you need join some tables for complex SQL you could use eg. `Doctrine\DBAL\Query\QueryBuilder` and pass it via constructor into your resolver. :)*
+
 Then you need define your own query parser with allowed FQL tokens. Simple query parser supporting all FQL tokens could look like this:
 
 ```php
