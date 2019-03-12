@@ -17,7 +17,7 @@ final class FilterParserTest extends TestCase
 		$sql = FilterParser::parse($fql, $resolver);
 		self::assertSame(
 			"name ILIKE '%samsung%'"
-			. " AND introduced_at >= '2019-01-01T00:00:00+01:00' AND introduced_at <= '2019-01-31T23:59:59+01:00'"
+			. " AND introduced_at >= '2019-01-01T00:00:00+00:00' AND introduced_at <= '2019-01-31T23:59:59+00:00'"
 			. " AND (type = 'tv' OR type = 'mobile')",
 			$sql
 		);
