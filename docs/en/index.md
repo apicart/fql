@@ -19,7 +19,7 @@ FQL is based on a syntax that seems to be the unofficial standard for search que
 
 Every filter query will operate under specific context eg. filter query for items or customers etc. So if I would like to create filter query resolver for FQL from "Introduction" section it could look like this:
 
-```
+```php
 <?php declare(strict_types = 1);
 
 namespace Apicart\FQL\Tests\Integration\Generator\SQL\Resolver;
@@ -121,7 +121,7 @@ final class FilterParser
 Finally FQL to SQL transformation process could look like this:
 
 ```php
-<?php
+<?php declare(strict_types = 1);
 
 use Apicart\FQL\Tests\Integration\FilterParser;
 use Apicart\FQL\Tests\Integration\Generator\SQL\Resolver\ItemFilterResolver;
