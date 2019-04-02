@@ -30,6 +30,6 @@
 		],
 		"check-cs": "vendor/bin/ecs check src tests",
 		"fix-cs": "vendor/bin/ecs check src tests --fix",
-		"phpstan": "vendor/binO"
+		"phpstan": "vendor/bin/phpstan analyse src tests --level max --configuration phpstan.neon"
 	}
 }
