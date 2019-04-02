@@ -7,7 +7,6 @@ use Apicart\FQL\Tokenizer\Full;
 use Apicart\FQL\Tokenizer\Text;
 use Apicart\FQL\Tokenizer\Tokenizer;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 use ReflectionClass;
 use RuntimeException;
 
@@ -20,17 +19,18 @@ final class TokenizerTest extends TestCase
 	 */
 	public function testExtractThrowsExceptionPCRE(): void
 	{
-		/** @var PHPUnit_Framework_MockObject_MockObject $extractor */
-		$extractor = $this->getMockBuilder(AbstractTokenExtractor::class)
+		$extractorMock = $this->getMockBuilder(AbstractTokenExtractor::class)
 			->setMethods(['getExpressionTypeMap'])
 			->getMockForAbstractClass();
 
-		$extractor->expects(self::once())
+		$extractorMock->expects(self::once())
 			->method('getExpressionTypeMap')
 			->willReturn([
 				'/(?:\D+|<\d+>)*[!?]/' => Tokenizer::TOKEN_WHITESPACE,
 			]);
 
+		/** @var AbstractTokenExtractor $extractor */
+		$extractor = $extractorMock;
 		$extractor->extract('foobar foobar foobar', 0);
 	}
 
