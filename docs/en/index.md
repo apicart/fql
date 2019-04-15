@@ -4,7 +4,7 @@ Write filter query as simple string via Filter Query Language (FQL) syntax. Filt
 
 **Simple FQL example:**
 
-`q:"samsung" AND introducedAt:["2019-01-01 00:00:00" TO NOW] AND type:(tv OR mobile)`
+`q:"samsung" AND introducedAt:["2019-01-01 00:00:00" TO NOW] AND type:(tv OR "mobile phone")`
 
 
 ## Syntax
@@ -128,12 +128,12 @@ Finally FQL to SQL transformation process could look like this:
 use Apicart\FQL\Tests\Integration\FilterParser;
 use Apicart\FQL\Tests\Integration\Generator\SQL\Resolver\ItemFilterResolver;
 
-$fql = 'q:"samsung" AND introducedAt:["2019-01-01 00:00:00" TO "2019-01-31 23:59:59"] AND type:(tv OR mobile)';
+$fql = 'q:"samsung" AND introducedAt:["2019-01-01 00:00:00" TO "2019-01-31 23:59:59"] AND type:(tv OR "mobile phone")';
 
 $resolver = new ItemFilterResolver;
 $sql = FilterParser::parse($fql, $resolver);
 
-echo $sql; // "name ILIKE '%samsung%' AND introduced_at >= '2019-01-01T00:00:00+00:00' AND introduced_at <= '2019-01-31T23:59:59+00:00' AND (type = 'tv' OR type = 'mobile')"
+echo $sql; // "name ILIKE '%samsung%' AND introduced_at >= '2019-01-01T00:00:00+00:00' AND introduced_at <= '2019-01-31T23:59:59+00:00' AND (type = 'tv' OR type = 'mobile phone')"
 ```
 
 For more informations about [token visitors](https://github.com/apicart/fql/tree/master/tests/Integration/Generator/SQL/Visitor), [fql resolvers](https://github.com/apicart/fql/tree/master/tests/Integration/Generator/SQL/Resolver) and [fql transformations](https://github.com/apicart/fql/tree/master/tests/Generator/SQL/FilterParserTest.php) see our [tests](https://github.com/apicart/fql/tree/master/tests).
