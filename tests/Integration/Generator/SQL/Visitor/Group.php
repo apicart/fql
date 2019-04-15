@@ -22,6 +22,7 @@ final class Group extends AbstractVisitor
 
 		$clauses = [];
 		foreach ($groupNode->getNodes() as $subNode) {
+			$options['parent'] = $node;
 			$clauses[] = $subVisitor->visit($subNode, $subVisitor, $options);
 		}
 

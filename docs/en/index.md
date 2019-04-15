@@ -4,7 +4,7 @@ Write filter query as simple string via Filter Query Language (FQL) syntax. Filt
 
 **Simple FQL example:**
 
-`q:"samsung" AND introducedAt:["2019-01-01 00:00:00" TO NOW] AND (type:tv OR type:mobile)`
+`q:"samsung" AND introducedAt:["2019-01-01 00:00:00" TO NOW] AND type:(tv OR mobile)`
 
 
 ## Syntax
@@ -128,7 +128,7 @@ Finally FQL to SQL transformation process could look like this:
 use Apicart\FQL\Tests\Integration\FilterParser;
 use Apicart\FQL\Tests\Integration\Generator\SQL\Resolver\ItemFilterResolver;
 
-$fql = 'q:"samsung" AND introducedAt:["2019-01-01 00:00:00" TO "2019-01-31 23:59:59"] AND (type:tv OR type:mobile)';
+$fql = 'q:"samsung" AND introducedAt:["2019-01-01 00:00:00" TO "2019-01-31 23:59:59"] AND type:(tv OR mobile)';
 
 $resolver = new ItemFilterResolver;
 $sql = FilterParser::parse($fql, $resolver);

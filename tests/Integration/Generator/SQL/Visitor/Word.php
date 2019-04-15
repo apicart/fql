@@ -4,6 +4,7 @@ namespace Apicart\FQL\Tests\Integration\Generator\SQL\Visitor;
 
 use Apicart\FQL\Generator\Common\AbstractVisitor;
 use Apicart\FQL\Tests\Integration\Generator\SQL\Resolver\AbstractFilterResolver;
+use Apicart\FQL\Token\Node\Group as GroupNode;
 use Apicart\FQL\Token\Node\Term;
 use Apicart\FQL\Token\Token\Word as WordToken;
 use Apicart\FQL\Value\AbstractNode;
@@ -36,10 +37,18 @@ final class Word extends AbstractVisitor
 		$termNode = $node;
 		/** @var WordToken $token */
 		$token = $termNode->getToken();
-
 		$domain = $token->getDomain();
+
 		if ($domain === '') {
-			throw new LogicException('Missing required domain');
+			$parent = $options['parent'] ?? false;
+			if ($parent instanceof GroupNode) {
+				$tokenLeft = $parent->getTokenLeft();
+				$domain = $tokenLeft->getDomain();
+			}
+
+			if ($domain === '') {
+				throw new LogicException('Missing required domain');
+			}
 		}
 
 		$wordEscaped = preg_replace('/([\\\'"+\-!():#@ ])/', '\\\\$1', $token->getWord());

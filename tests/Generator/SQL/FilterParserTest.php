@@ -11,7 +11,7 @@ final class FilterParserTest extends TestCase
 
 	public function testParse(): void
 	{
-		$fql = 'q:"samsung" AND introducedAt:["2019-01-01 00:00:00" TO "2019-01-31 23:59:59"] AND (type:tv OR type:mobile)';
+		$fql = 'q:"samsung" AND introducedAt:["2019-01-01 00:00:00" TO "2019-01-31 23:59:59"] AND type:(tv OR mobile)';
 		$resolver = new ItemFilterResolver;
 
 		$sql = FilterParser::parse($fql, $resolver);
