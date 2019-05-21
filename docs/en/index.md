@@ -4,7 +4,7 @@ Write filter query as simple string via Filter Query Language (FQL) syntax. Filt
 
 **Simple FQL example:**
 
-`q:"samsung" AND introducedAt:["2019-01-01 00:00:00" TO NOW] AND type:(tv OR "mobile phone")`
+`q:"samsung" AND introducedAt:["2019-01-01 00:00:00" TO NOW] AND NOT type:(tv OR "mobile phone") OR price:{10 TO *]`
 
 
 ## Syntax
@@ -24,6 +24,7 @@ Every filter query will operate under specific context eg. filter query for item
 
 namespace Apicart\FQL\Tests\Integration\Generator\SQL\Resolver;
 
+use Apicart\FQL\Generator\SQL\Resolver\AbstractFilterResolver;
 use Apicart\FQL\Token\Token\Range;
 use DateTime;
 
@@ -41,6 +42,9 @@ final class ItemFilterResolver extends AbstractFilterResolver
 			'type' => function (string $value) {
 				return $this->typeResolver($value);
 			},
+            'price' => function (Range $range) {
+                return $this->priceResolver($range);
+            },
 		];
 	}
 
@@ -51,24 +55,40 @@ final class ItemFilterResolver extends AbstractFilterResolver
 
 	private function introducedAtResolver(Range $range): string
 	{
-		$fromOperator = $range->getStartType() === Range::TYPE_INCLUSIVE ? '>=' : '>';
-		$toOperator = $range->getEndType() === Range::TYPE_INCLUSIVE ? '<=' : '<';
-		$rangeFrom = new DateTime($range->getRangeFrom());
-		$rangeTo = new DateTime($range->getRangeTo());
+		$rangeFrom = new DateTime($range->getStartValue());
+        $rangeTo = new DateTime($range->getEndValue());
 
-		return sprintf(
-			"introduced_at %s '%s' AND introduced_at %s '%s'",
-			$fromOperator,
-			$rangeFrom->format(DateTime::ATOM),
-			$toOperator,
-			$rangeTo->format(DateTime::ATOM)
-		);
+        return sprintf(
+            "introduced_at %s '%s' AND introduced_at %s '%s'",
+            $range->getStartSign(),
+            $rangeFrom->format(DateTime::ATOM),
+            $range->getEndSign(),
+            $rangeTo->format(DateTime::ATOM)
+        );
 	}
 
 	private function typeResolver(string $value): string
 	{
 		return "type = '${value}'";
 	}
+
+
+    private function priceResolver(Range $range): string
+    {
+        $condition = '';
+        if ($range->isStartDefined()) {
+            $condition .= sprintf('price %s %s', $range->getStartSign(), $range->getStartValue());
+        }
+
+        if ($range->isEndDefined()) {
+            if ($condition !== '') {
+                $condition .= ' AND ';
+            }
+            $condition .= sprintf('price %s %s', $range->getEndSign(), $range->getEndValue());
+        }
+
+        return $condition;
+    }
 }
 ```
 
@@ -82,13 +102,14 @@ Then you need define your own query parser with allowed FQL tokens. Simple query
 namespace Apicart\FQL\Tests\Integration;
 
 use Apicart\FQL\Generator\Common\Aggregate;
-use Apicart\FQL\Tests\Integration\Generator\SQL\Resolver\AbstractFilterResolver;
-use Apicart\FQL\Tests\Integration\Generator\SQL\Visitor\Binary;
-use Apicart\FQL\Tests\Integration\Generator\SQL\Visitor\Group;
-use Apicart\FQL\Tests\Integration\Generator\SQL\Visitor\Phrase;
-use Apicart\FQL\Tests\Integration\Generator\SQL\Visitor\Query;
-use Apicart\FQL\Tests\Integration\Generator\SQL\Visitor\Range;
-use Apicart\FQL\Tests\Integration\Generator\SQL\Visitor\Word;
+use Apicart\FQL\Generator\SQL\BinaryOperator;
+use Apicart\FQL\Generator\SQL\Group;
+use Apicart\FQL\Generator\SQL\Phrase;
+use Apicart\FQL\Generator\SQL\Query;
+use Apicart\FQL\Generator\SQL\Range;
+use Apicart\FQL\Generator\SQL\Resolver\AbstractFilterResolver;
+use Apicart\FQL\Generator\SQL\UnaryOperator;
+use Apicart\FQL\Generator\SQL\Word;
 use Apicart\FQL\Tokenizer\Full;
 use Apicart\FQL\Tokenizer\Parser;
 use Apicart\FQL\Tokenizer\Tokenizer;
@@ -106,7 +127,8 @@ final class FilterParser
 
 		$visitor = new Aggregate(
 			[
-				new Binary,
+				new BinaryOperator,
+				new UnaryOperator,
 				new Group,
 				new Query,
 				new Phrase($filterResolver),
@@ -128,12 +150,12 @@ Finally FQL to SQL transformation process could look like this:
 use Apicart\FQL\Tests\Integration\FilterParser;
 use Apicart\FQL\Tests\Integration\Generator\SQL\Resolver\ItemFilterResolver;
 
-$fql = 'q:"samsung" AND introducedAt:["2019-01-01 00:00:00" TO "2019-01-31 23:59:59"] AND type:(tv OR "mobile phone")';
+$fql = 'q:"samsung" AND introducedAt:["2019-01-01 00:00:00" TO "2019-01-31 23:59:59"] AND NOT type:(tv OR "mobile phone") OR price:{10 TO *]';
 
 $resolver = new ItemFilterResolver;
 $sql = FilterParser::parse($fql, $resolver);
 
-echo $sql; // "name ILIKE '%samsung%' AND introduced_at >= '2019-01-01T00:00:00+00:00' AND introduced_at <= '2019-01-31T23:59:59+00:00' AND (type = 'tv' OR type = 'mobile phone')"
+echo $sql; // "name ILIKE '%samsung%' AND introduced_at >= '2019-01-01T00:00:00+00:00' AND introduced_at <= '2019-01-31T23:59:59+00:00' AND (type = 'tv' OR type = 'mobile phone') OR (price > 10)"
 ```
 
-For more informations about [token visitors](https://github.com/apicart/fql/tree/master/tests/Integration/Generator/SQL/Visitor), [fql resolvers](https://github.com/apicart/fql/tree/master/tests/Integration/Generator/SQL/Resolver) and [fql transformations](https://github.com/apicart/fql/tree/master/tests/Generator/SQL/FilterParserTest.php) see our [tests](https://github.com/apicart/fql/tree/master/tests).
+For more informations about [token visitors](https://github.com/apicart/fql/tree/master/src/Generator/SQL), [fql resolvers](https://github.com/apicart/fql/tree/master/tests/Integration/Generator/SQL/Resolver) and [fql transformations](https://github.com/apicart/fql/tree/master/tests/Generator/SQL/FilterParserTest.php) see our [tests](https://github.com/apicart/fql/tree/master/tests).

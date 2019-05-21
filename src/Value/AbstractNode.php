@@ -5,9 +5,9 @@ namespace Apicart\FQL\Value;
 abstract class AbstractNode
 {
 
-	/**
-	 * @return AbstractNode[]
-	 */
-	abstract public function getNodes(): array;
+    /**
+     * @return AbstractNode[]
+     */
+    abstract public function getNodes(): array;
 
 }

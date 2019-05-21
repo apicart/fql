@@ -9,33 +9,33 @@ use PHPUnit\Framework\TestCase;
 final class RangeTest extends TestCase
 {
 
-	public function failingTypeDataprovider(): array
-	{
-		return [
-			['', 'inclusive'],
-			['', 'exclusive'],
-			['inclusive', ''],
-			['exclusive', ''],
-			[null, null],
-			['other', 'inclusive'],
-			['other', 'exclusive'],
-			['inclusive', 'other'],
-			['exclusive', 'other'],
-			['inclusive', null],
-			['exclusive', null],
-			[null, 'inclusive'],
-			[null, 'exclusive'],
-		];
-	}
+    public function failingTypeDataprovider(): array
+    {
+        return [
+            ['', 'inclusive'],
+            ['', 'exclusive'],
+            ['inclusive', ''],
+            ['exclusive', ''],
+            [null, null],
+            ['other', 'inclusive'],
+            ['other', 'exclusive'],
+            ['inclusive', 'other'],
+            ['exclusive', 'other'],
+            ['inclusive', null],
+            ['exclusive', null],
+            [null, 'inclusive'],
+            [null, 'exclusive'],
+        ];
+    }
 
 
-	/**
-	 * @dataProvider failingTypeDataprovider
-	 */
-	public function testConstructorFailsWrongType(?string $startType, ?string $endType): void
-	{
-		$this->expectException(InvalidArgumentException::class);
-		new Range('[a TO b]', 0, '', 'a', 'b', $startType, $endType);
-	}
+    /**
+     * @dataProvider failingTypeDataprovider
+     */
+    public function testConstructorFailsWrongType(?string $startType, ?string $endType): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new Range('[a TO b]', 0, '', 'a', 'b', $startType, $endType);
+    }
 
 }

@@ -13,59 +13,56 @@ use RuntimeException;
 final class TokenizerTest extends TestCase
 {
 
-	/**
-	 * @expectedException RuntimeException
-	 * @expectedExceptionMessage PCRE regex error code: 2
-	 */
-	public function testExtractThrowsExceptionPCRE(): void
-	{
-		$extractorMock = $this->getMockBuilder(AbstractTokenExtractor::class)
-			->setMethods(['getExpressionTypeMap'])
-			->getMockForAbstractClass();
+    public function testExtractThrowsExceptionPCRE(): void
+    {
+        self::expectException(RuntimeException::class);
+        self::expectExceptionMessage('PCRE regex error code: 2');
 
-		$extractorMock->expects(self::once())
-			->method('getExpressionTypeMap')
-			->willReturn([
-				'/(?:\D+|<\d+>)*[!?]/' => Tokenizer::TOKEN_WHITESPACE,
-			]);
+        $extractorMock = $this->getMockBuilder(AbstractTokenExtractor::class)
+            ->setMethods(['getExpressionTypeMap'])
+            ->getMockForAbstractClass();
 
-		/** @var AbstractTokenExtractor $extractor */
-		$extractor = $extractorMock;
-		$extractor->extract('foobar foobar foobar', 0);
-	}
+        $extractorMock->expects(self::once())
+            ->method('getExpressionTypeMap')
+            ->willReturn([
+                '/(?:\D+|<\d+>)*[!?]/' => Tokenizer::TOKEN_WHITESPACE,
+            ]);
 
-
-	/**
-	 * @expectedException RuntimeException
-	 * @expectedExceptionMessage Could not extract term token from the given data
-	 */
-	public function testFullExtractTermTokenThrowsException(): void
-	{
-		$extractor = new Full();
-		$reflectedClass = new ReflectionClass($extractor);
-		$reflectedProperty = $reflectedClass->getProperty('expressionTypeMap');
-		$reflectedProperty->setAccessible(true);
-		$reflectedProperty->setValue([
-			'/(?<lexeme>foobar)/' => Tokenizer::TOKEN_TERM,
-		]);
-		$extractor->extract('foobar', 0);
-	}
+        /** @var AbstractTokenExtractor $extractor */
+        $extractor = $extractorMock;
+        $extractor->extract('foobar foobar foobar', 0);
+    }
 
 
-	/**
-	 * @expectedException RuntimeException
-	 * @expectedExceptionMessage Could not extract term token from the given data
-	 */
-	public function testTextExtractTermTokenThrowsException(): void
-	{
-		$extractor = new Text();
-		$reflectedClass = new ReflectionClass($extractor);
-		$reflectedProperty = $reflectedClass->getProperty('expressionTypeMap');
-		$reflectedProperty->setAccessible(true);
-		$reflectedProperty->setValue([
-			'/(?<lexeme>foobar)/' => Tokenizer::TOKEN_TERM,
-		]);
-		$extractor->extract('foobar', 0);
-	}
+    public function testFullExtractTermTokenThrowsException(): void
+    {
+        self::expectException(RuntimeException::class);
+        self::expectExceptionMessage('Could not extract term token from the given data');
+
+        $extractor = new Full();
+        $reflectedClass = new ReflectionClass($extractor);
+        $reflectedProperty = $reflectedClass->getProperty('expressionTypeMap');
+        $reflectedProperty->setAccessible(true);
+        $reflectedProperty->setValue([
+            '/(?<lexeme>foobar)/' => Tokenizer::TOKEN_TERM,
+        ]);
+        $extractor->extract('foobar', 0);
+    }
+
+
+    public function testTextExtractTermTokenThrowsException(): void
+    {
+        self::expectException(RuntimeException::class);
+        self::expectExceptionMessage('Could not extract term token from the given data');
+
+        $extractor = new Text();
+        $reflectedClass = new ReflectionClass($extractor);
+        $reflectedProperty = $reflectedClass->getProperty('expressionTypeMap');
+        $reflectedProperty->setAccessible(true);
+        $reflectedProperty->setValue([
+            '/(?<lexeme>foobar)/' => Tokenizer::TOKEN_TERM,
+        ]);
+        $extractor->extract('foobar', 0);
+    }
 
 }

@@ -8,21 +8,21 @@ use Apicart\FQL\Value\SyntaxTree;
 final class Native
 {
 
-	/**
-	 * @var AbstractVisitor
-	 */
-	private $visitor;
+    /**
+     * @var AbstractVisitor
+     */
+    private $visitor;
 
 
-	public function __construct(AbstractVisitor $visitor)
-	{
-		$this->visitor = $visitor;
-	}
+    public function __construct(AbstractVisitor $visitor)
+    {
+        $this->visitor = $visitor;
+    }
 
 
-	public function generate(SyntaxTree $syntaxTree): string
-	{
-		return $this->visitor->visit($syntaxTree->getRootNode());
-	}
+    public function generate(SyntaxTree $syntaxTree): string
+    {
+        return $this->visitor->visit($syntaxTree->getRootNode());
+    }
 
 }

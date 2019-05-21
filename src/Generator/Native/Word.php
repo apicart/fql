@@ -11,24 +11,24 @@ use LogicException;
 final class Word extends AbstractVisitor
 {
 
-	public function accept(AbstractNode $node): bool
-	{
-		return $node instanceof Term && $node->getToken() instanceof WordToken;
-	}
+    public function accept(AbstractNode $node): bool
+    {
+        return $node instanceof Term && $node->getToken() instanceof WordToken;
+    }
 
 
-	public function visit(AbstractNode $node, ?AbstractVisitor $subVisitor = null, ?array $options = null): string
-	{
-		if (! $node instanceof Term) {
-			throw new LogicException('Implementation accepts instance of Term Node');
-		}
-		$token = $node->getToken();
-		if (! $token instanceof WordToken) {
-			throw new LogicException('Implementation accepts instance of Word Token');
-		}
-		$domainPrefix = $token->getDomain() === '' ? '' : "{$token->getDomain()}:";
-		$wordEscaped = preg_replace('/([\\\'"+\-!():#@ ])/', '\\\\$1', $token->getWord());
-		return "{$domainPrefix}{$wordEscaped}";
-	}
+    public function visit(AbstractNode $node, ?AbstractVisitor $subVisitor = null, ?array $options = null): string
+    {
+        if (! $node instanceof Term) {
+            throw new LogicException('Implementation accepts instance of Term Node');
+        }
+        $token = $node->getToken();
+        if (! $token instanceof WordToken) {
+            throw new LogicException('Implementation accepts instance of Word Token');
+        }
+        $domainPrefix = $token->getDomain() === '' ? '' : "{$token->getDomain()}:";
+        $wordEscaped = preg_replace('/([\\\'"+\-!():#@ ])/', '\\\\$1', $token->getWord());
+        return "{$domainPrefix}{$wordEscaped}";
+    }
 
 }

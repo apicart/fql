@@ -7,6 +7,6 @@ use Apicart\FQL\Value\TokenSequence;
 interface TokenizerInterface
 {
 
-	public function tokenize(string $text): TokenSequence;
+    public function tokenize(string $text): TokenSequence;
 
 }

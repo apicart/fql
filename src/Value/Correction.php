@@ -5,40 +5,40 @@ namespace Apicart\FQL\Value;
 class Correction
 {
 
-	/**
-	 * @var mixed
-	 */
-	private $type;
+    /**
+     * @var mixed
+     */
+    private $type;
 
-	/**
-	 * @var Token[]
-	 */
-	private $tokens = [];
-
-
-	/**
-	 * @param mixed $type
-	 * @param Token[] ...$tokens
-	 */
-	public function __construct($type, Token ...$tokens)
-	{
-		$this->type = $type;
-		$this->tokens = $tokens;
-	}
+    /**
+     * @var Token[]
+     */
+    private $tokens = [];
 
 
-	/**
-	 * @return mixed
-	 */
-	public function getType()
-	{
-		return $this->type;
-	}
+    /**
+     * @param mixed $type
+     * @param Token[] ...$tokens
+     */
+    public function __construct($type, Token ...$tokens)
+    {
+        $this->type = $type;
+        $this->tokens = $tokens;
+    }
 
 
-	public function getTokens(): array
-	{
-		return $this->tokens;
-	}
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+
+    public function getTokens(): array
+    {
+        return $this->tokens;
+    }
 
 }

@@ -14,91 +14,91 @@ use PHPUnit\Framework\TestCase;
 
 final class RangeTest extends TestCase
 {
-	/**
-	 * @var AbstractVisitor
-	 */
-	public $visitor;
+    /**
+     * @var AbstractVisitor
+     */
+    public $visitor;
 
 
-	protected function setUp(): void
-	{
-		$this->visitor = new Range();
-	}
+    protected function setUp(): void
+    {
+        $this->visitor = new Range();
+    }
 
 
-	public function acceptDataprovider(): array
-	{
-		return [
-			[true, new Term(new RangeToken('[a TO b]', 0, '', 'a', 'b', 'inclusive', 'inclusive'))],
-			[false, new Term(new Word('word', 0, '', 'a'))],
-		];
-	}
+    public function acceptDataprovider(): array
+    {
+        return [
+            [true, new Term(new RangeToken('[a TO b]', 0, '', 'a', 'b', 'inclusive', 'inclusive'))],
+            [false, new Term(new Word('word', 0, '', 'a'))],
+        ];
+    }
 
 
-	/**
-	 * @dataProvider acceptDataprovider
-	 */
-	public function testAccepts(bool $expected, AbstractNode $node): void
-	{
-		self::assertSame($expected, $this->visitor->accept($node));
-	}
+    /**
+     * @dataProvider acceptDataprovider
+     */
+    public function testAccepts(bool $expected, AbstractNode $node): void
+    {
+        self::assertSame($expected, $this->visitor->accept($node));
+    }
 
 
-	public function visitDataprovider(): array
-	{
-		return [
-			['[a TO b]', new Term(new RangeToken('[a TO b]', 0, '', 'a', 'b', 'inclusive', 'inclusive'))],
-			['[a TO b}', new Term(new RangeToken('[a TO b}', 0, '', 'a', 'b', 'inclusive', 'exclusive'))],
-			['{a TO b}', new Term(new RangeToken('{a TO b}', 0, '', 'a', 'b', 'exclusive', 'exclusive'))],
-			['{a TO b]', new Term(new RangeToken('{a TO b]', 0, '', 'a', 'b', 'exclusive', 'inclusive'))],
-		];
-	}
+    public function visitDataprovider(): array
+    {
+        return [
+            ['[a TO b]', new Term(new RangeToken('[a TO b]', 0, '', 'a', 'b', 'inclusive', 'inclusive'))],
+            ['[a TO b}', new Term(new RangeToken('[a TO b}', 0, '', 'a', 'b', 'inclusive', 'exclusive'))],
+            ['{a TO b}', new Term(new RangeToken('{a TO b}', 0, '', 'a', 'b', 'exclusive', 'exclusive'))],
+            ['{a TO b]', new Term(new RangeToken('{a TO b]', 0, '', 'a', 'b', 'exclusive', 'inclusive'))],
+        ];
+    }
 
 
-	/**
-	 * @dataProvider visitDataprovider
-	 */
-	public function testVisit(string $expected, AbstractNode $node): void
-	{
-		self::assertSame($expected, $this->visitor->visit($node));
-	}
+    /**
+     * @dataProvider visitDataprovider
+     */
+    public function testVisit(string $expected, AbstractNode $node): void
+    {
+        self::assertSame($expected, $this->visitor->visit($node));
+    }
 
 
-	public function visitWrongNodeDataprovider(): array
-	{
-		return [[new Mandatory], [new Term(new Word('word', 0, '', 'a'))]];
-	}
+    public function visitWrongNodeDataprovider(): array
+    {
+        return [[new Mandatory], [new Term(new Word('word', 0, '', 'a'))]];
+    }
 
 
-	/**
-	 * @dataProvider visitWrongNodeDataprovider
-	 */
-	public function testVisitWrongNodeFails(AbstractNode $node): void
-	{
-		$this->expectException(LogicException::class);
-		$this->visitor->visit($node);
-	}
+    /**
+     * @dataProvider visitWrongNodeDataprovider
+     */
+    public function testVisitWrongNodeFails(AbstractNode $node): void
+    {
+        $this->expectException(LogicException::class);
+        $this->visitor->visit($node);
+    }
 
 
-	public function testVisitUnknownRangeStartTypeFails(): void
-	{
-		$token = new RangeToken('{a TO b}', 0, '', 'a', 'b', 'inclusive', 'inclusive');
-		$token->setStartType('unknown');
-		$node = new Term($token);
-		$this->expectException(LogicException::class);
-		$this->expectExceptionMessage('Range start type unknown is not supported');
-		$this->visitor->visit($node);
-	}
+    public function testVisitUnknownRangeStartTypeFails(): void
+    {
+        $token = new RangeToken('{a TO b}', 0, '', 'a', 'b', 'inclusive', 'inclusive');
+        $token->setStartType('unknown');
+        $node = new Term($token);
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('Range start type unknown is not supported');
+        $this->visitor->visit($node);
+    }
 
 
-	public function testVisitUnknownRangeEndTypeFails(): void
-	{
-		$token = new RangeToken('{a TO b}', 0, '', 'a', 'b', 'inclusive', 'inclusive');
-		$token->setEndType('unknown');
-		$node = new Term($token);
-		$this->expectException(LogicException::class);
-		$this->expectExceptionMessage('Range end type unknown is not supported');
-		$this->visitor->visit($node);
-	}
+    public function testVisitUnknownRangeEndTypeFails(): void
+    {
+        $token = new RangeToken('{a TO b}', 0, '', 'a', 'b', 'inclusive', 'inclusive');
+        $token->setEndType('unknown');
+        $node = new Term($token);
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('Range end type unknown is not supported');
+        $this->visitor->visit($node);
+    }
 
 }

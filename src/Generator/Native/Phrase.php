@@ -11,24 +11,24 @@ use LogicException;
 final class Phrase extends AbstractVisitor
 {
 
-	public function accept(AbstractNode $node): bool
-	{
-		return $node instanceof Term && $node->getToken() instanceof PhraseToken;
-	}
+    public function accept(AbstractNode $node): bool
+    {
+        return $node instanceof Term && $node->getToken() instanceof PhraseToken;
+    }
 
 
-	public function visit(AbstractNode $node, ?AbstractVisitor $subVisitor = null, ?array $options = null): string
-	{
-		if (! $node instanceof Term) {
-			throw new LogicException('Implementation accepts instance of Term Node');
-		}
-		$token = $node->getToken();
-		if (! $token instanceof PhraseToken) {
-			throw new LogicException('Implementation accepts instance of Phrase Token');
-		}
-		$domainPrefix = $token->getDomain() === '' ? '' : "{$token->getDomain()}:";
-		$phraseEscaped = preg_replace("/([\\{$token->getQuote()}])/", '\\\\$1', $token->getPhrase());
-		return "{$domainPrefix}{$token->getQuote()}{$phraseEscaped}{$token->getQuote()}";
-	}
+    public function visit(AbstractNode $node, ?AbstractVisitor $subVisitor = null, ?array $options = null): string
+    {
+        if (! $node instanceof Term) {
+            throw new LogicException('Implementation accepts instance of Term Node');
+        }
+        $token = $node->getToken();
+        if (! $token instanceof PhraseToken) {
+            throw new LogicException('Implementation accepts instance of Phrase Token');
+        }
+        $domainPrefix = $token->getDomain() === '' ? '' : "{$token->getDomain()}:";
+        $phraseEscaped = preg_replace("/([\\{$token->getQuote()}])/", '\\\\$1', $token->getPhrase());
+        return "{$domainPrefix}{$token->getQuote()}{$phraseEscaped}{$token->getQuote()}";
+    }
 
 }

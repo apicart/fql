@@ -8,35 +8,35 @@ use Apicart\FQL\Value\Token;
 final class User extends Token
 {
 
-	/**
-	 * @var string
-	 */
-	private $marker;
+    /**
+     * @var string
+     */
+    private $marker;
 
-	/**
-	 * @var string
-	 */
-	private $user;
-
-
-	public function __construct(string $lexeme, int $position, string $marker, string $user)
-	{
-		$this->marker = $marker;
-		$this->user = $user;
-
-		parent::__construct(Tokenizer::TOKEN_TERM, $lexeme, $position);
-	}
+    /**
+     * @var string
+     */
+    private $user;
 
 
-	public function getMarker(): string
-	{
-		return $this->marker;
-	}
+    public function __construct(string $lexeme, int $position, string $marker, string $user)
+    {
+        $this->marker = $marker;
+        $this->user = $user;
+
+        parent::__construct(Tokenizer::TOKEN_TERM, $lexeme, $position);
+    }
 
 
-	public function getUser(): string
-	{
-		return $this->user;
-	}
+    public function getMarker(): string
+    {
+        return $this->marker;
+    }
+
+
+    public function getUser(): string
+    {
+        return $this->user;
+    }
 
 }

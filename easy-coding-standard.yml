@@ -33,7 +33,7 @@ services:
         searchAnnotations: TRUE
 
 parameters:
-    indentation: tab
+    indentation: spaces
     skip:
         PHP_CodeSniffer\Standards\PSR2\Sniffs\ControlStructures\ControlStructureSpacingSniff:
         Symplify\CodingStandard\Sniffs\DependencyInjection\NoClassInstantiationSniff:

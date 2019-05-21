@@ -8,47 +8,47 @@ use Apicart\FQL\Value\Token;
 final class Phrase extends Token
 {
 
-	/**
-	 * @var string|null
-	 */
-	private $domain;
+    /**
+     * @var string|null
+     */
+    private $domain;
 
-	/**
-	 * @var string
-	 */
-	private $quote;
+    /**
+     * @var string
+     */
+    private $quote;
 
-	/**
-	 * @var string
-	 */
-	private $phrase;
-
-
-	public function __construct(string $lexeme, int $position, string $domain, string $quote, string $phrase)
-	{
-		$this->domain = $domain;
-		$this->quote = $quote;
-		$this->phrase = $phrase;
-
-		parent::__construct(Tokenizer::TOKEN_TERM, $lexeme, $position);
-	}
+    /**
+     * @var string
+     */
+    private $phrase;
 
 
-	public function getDomain(): ?string
-	{
-		return $this->domain;
-	}
+    public function __construct(string $lexeme, int $position, string $domain, string $quote, string $phrase)
+    {
+        $this->domain = $domain;
+        $this->quote = $quote;
+        $this->phrase = $phrase;
+
+        parent::__construct(Tokenizer::TOKEN_TERM, $lexeme, $position);
+    }
 
 
-	public function getQuote(): string
-	{
-		return $this->quote;
-	}
+    public function getDomain(): ?string
+    {
+        return $this->domain;
+    }
 
 
-	public function getPhrase(): string
-	{
-		return $this->phrase;
-	}
+    public function getQuote(): string
+    {
+        return $this->quote;
+    }
+
+
+    public function getPhrase(): string
+    {
+        return $this->phrase;
+    }
 
 }

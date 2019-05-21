@@ -7,24 +7,24 @@ use Apicart\FQL\Value\AbstractNode;
 final class Query extends AbstractNode
 {
 
-	/**
-	 * @var AbstractNode[]
-	 */
-	private $nodes = [];
+    /**
+     * @var AbstractNode[]
+     */
+    private $nodes = [];
 
 
-	/**
-	 * @param AbstractNode[] $nodes
-	 */
-	public function __construct(array $nodes)
-	{
-		$this->nodes = $nodes;
-	}
+    /**
+     * @param AbstractNode[] $nodes
+     */
+    public function __construct(array $nodes)
+    {
+        $this->nodes = $nodes;
+    }
 
 
-	public function getNodes(): array
-	{
-		return $this->nodes;
-	}
+    public function getNodes(): array
+    {
+        return $this->nodes;
+    }
 
 }

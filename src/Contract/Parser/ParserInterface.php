@@ -8,6 +8,6 @@ use Apicart\FQL\Value\TokenSequence;
 interface ParserInterface
 {
 
-	public function parse(TokenSequence $tokenSequence): SyntaxTree;
+    public function parse(TokenSequence $tokenSequence): SyntaxTree;
 
 }

@@ -8,51 +8,51 @@ use Apicart\FQL\Value\Token;
 final class LogicalNot extends AbstractNode
 {
 
-	/**
-	 * @var AbstractNode
-	 */
-	private $operand;
+    /**
+     * @var AbstractNode
+     */
+    private $operand;
 
-	/**
-	 * @var Token
-	 */
-	private $token;
-
-
-	public function __construct(?AbstractNode $operand = null, ?Token $token = null)
-	{
-		$this->operand = $operand;
-		$this->token = $token;
-	}
+    /**
+     * @var Token
+     */
+    private $token;
 
 
-	public function getNodes(): array
-	{
-		return [$this->getOperand()];
-	}
+    public function __construct(?AbstractNode $operand = null, ?Token $token = null)
+    {
+        $this->operand = $operand;
+        $this->token = $token;
+    }
 
 
-	public function getOperand(): AbstractNode
-	{
-		return $this->operand;
-	}
+    public function getNodes(): array
+    {
+        return [$this->getOperand()];
+    }
 
 
-	public function setOperand(AbstractNode $operand): void
-	{
-		$this->operand = $operand;
-	}
+    public function getOperand(): AbstractNode
+    {
+        return $this->operand;
+    }
 
 
-	public function getToken(): Token
-	{
-		return $this->token;
-	}
+    public function setOperand(AbstractNode $operand): void
+    {
+        $this->operand = $operand;
+    }
 
 
-	public function setToken(Token $token): void
-	{
-		$this->token = $token;
-	}
+    public function getToken(): Token
+    {
+        return $this->token;
+    }
+
+
+    public function setToken(Token $token): void
+    {
+        $this->token = $token;
+    }
 
 }

@@ -9,71 +9,71 @@ use Apicart\FQL\Value\Token;
 final class Group extends AbstractNode
 {
 
-	/**
-	 * @var AbstractNode[]
-	 */
-	private $nodes = [];
+    /**
+     * @var AbstractNode[]
+     */
+    private $nodes = [];
 
-	/**
-	 * @var GroupBegin
-	 */
-	private $tokenLeft;
+    /**
+     * @var GroupBegin
+     */
+    private $tokenLeft;
 
-	/**
-	 * @var Token
-	 */
-	private $tokenRight;
-
-
-	/**
-	 * @param AbstractNode[] $nodes
-	 */
-	public function __construct(array $nodes = [], ?GroupBegin $tokenLeft = null, ?Token $tokenRight = null) {
-		$this->nodes = $nodes;
-		$this->tokenLeft = $tokenLeft;
-		$this->tokenRight = $tokenRight;
-	}
+    /**
+     * @var Token
+     */
+    private $tokenRight;
 
 
-	/**
-	 * @return AbstractNode[]
-	 */
-	public function getNodes(): array
-	{
-		return $this->nodes;
-	}
+    /**
+     * @param AbstractNode[] $nodes
+     */
+    public function __construct(array $nodes = [], ?GroupBegin $tokenLeft = null, ?Token $tokenRight = null) {
+        $this->nodes = $nodes;
+        $this->tokenLeft = $tokenLeft;
+        $this->tokenRight = $tokenRight;
+    }
 
 
-	/**
-	 * @param AbstractNode[] $nodes
-	 */
-	public function setNodes(array $nodes): void
-	{
-		$this->nodes = $nodes;
-	}
+    /**
+     * @return AbstractNode[]
+     */
+    public function getNodes(): array
+    {
+        return $this->nodes;
+    }
 
 
-	public function getTokenLeft(): GroupBegin
-	{
-		return $this->tokenLeft;
-	}
+    /**
+     * @param AbstractNode[] $nodes
+     */
+    public function setNodes(array $nodes): void
+    {
+        $this->nodes = $nodes;
+    }
 
 
-	public function setTokenLeft(GroupBegin $tokenLeft): void
-	{
-		$this->tokenLeft = $tokenLeft;
-	}
+    public function getTokenLeft(): GroupBegin
+    {
+        return $this->tokenLeft;
+    }
 
 
-	public function getTokenRight(): Token
-	{
-		return $this->tokenRight;
-	}
+    public function setTokenLeft(GroupBegin $tokenLeft): void
+    {
+        $this->tokenLeft = $tokenLeft;
+    }
 
 
-	public function setTokenRight(Token $tokenRight): void
-	{
-		$this->tokenRight = $tokenRight;
-	}
+    public function getTokenRight(): Token
+    {
+        return $this->tokenRight;
+    }
+
+
+    public function setTokenRight(Token $tokenRight): void
+    {
+        $this->tokenRight = $tokenRight;
+    }
 
 }

@@ -8,35 +8,35 @@ use Apicart\FQL\Value\Token;
 final class Word extends Token
 {
 
-	/**
-	 * @var string
-	 */
-	private $domain;
+    /**
+     * @var string
+     */
+    private $domain;
 
-	/**
-	 * @var string
-	 */
-	private $word;
-
-
-	public function __construct(string $lexeme, int $position, string $domain, string $word)
-	{
-		$this->domain = $domain;
-		$this->word = $word;
-
-		parent::__construct(Tokenizer::TOKEN_TERM, $lexeme, $position);
-	}
+    /**
+     * @var string
+     */
+    private $word;
 
 
-	public function getDomain(): string
-	{
-		return $this->domain;
-	}
+    public function __construct(string $lexeme, int $position, string $domain, string $word)
+    {
+        $this->domain = $domain;
+        $this->word = $word;
+
+        parent::__construct(Tokenizer::TOKEN_TERM, $lexeme, $position);
+    }
 
 
-	public function getWord(): string
-	{
-		return $this->word;
-	}
+    public function getDomain(): string
+    {
+        return $this->domain;
+    }
+
+
+    public function getWord(): string
+    {
+        return $this->word;
+    }
 
 }

@@ -8,27 +8,27 @@ use Apicart\FQL\Value\Token;
 final class Term extends AbstractNode
 {
 
-	/**
-	 * @var Token
-	 */
-	private $token;
+    /**
+     * @var Token
+     */
+    private $token;
 
 
-	public function __construct(Token $token)
-	{
-		$this->token = $token;
-	}
+    public function __construct(Token $token)
+    {
+        $this->token = $token;
+    }
 
 
-	public function getNodes(): array
-	{
-		return [];
-	}
+    public function getNodes(): array
+    {
+        return [];
+    }
 
 
-	public function getToken(): Token
-	{
-		return $this->token;
-	}
+    public function getToken(): Token
+    {
+        return $this->token;
+    }
 
 }
