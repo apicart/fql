@@ -5,8 +5,9 @@ namespace Apicart\FQL\Generator\SQL;
 use Apicart\FQL\Generator\Common\AbstractVisitor;
 use Apicart\FQL\Token\Node\LogicalNot;
 use Apicart\FQL\Value\AbstractNode;
+use LogicException;
 
-class UnaryOperator extends AbstractVisitor
+final class UnaryOperator extends AbstractVisitor
 {
 
     public function accept(AbstractNode $node): bool
@@ -19,6 +20,10 @@ class UnaryOperator extends AbstractVisitor
     {
         /** @var LogicalNot $logicalNotNode */
         $logicalNotNode = $node;
+
+        if ($subVisitor === null) {
+            throw new LogicException('Implementation requires sub-visitor');
+        }
 
         return 'NOT (' . $subVisitor->visit($logicalNotNode->getOperand(), $subVisitor, $options) . ')';
     }
