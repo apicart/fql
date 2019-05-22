@@ -30,32 +30,32 @@ use DateTime;
 
 final class ItemFilterResolver extends AbstractFilterResolver
 {
-	protected function getResolvers(): array
-	{
-		return [
-			'q' => function (string $value) {
-				return $this->queryResolver($value);
-			},
-			'introducedAt' => function (Range $range) {
-				return $this->introducedAtResolver($range);
-			},
-			'type' => function (string $value) {
-				return $this->typeResolver($value);
-			},
+    protected function getResolvers(): array
+    {
+        return [
+            'q' => function (string $value) {
+                return $this->queryResolver($value);
+            },
+            'introducedAt' => function (Range $range) {
+                return $this->introducedAtResolver($range);
+            },
+            'type' => function (string $value) {
+                return $this->typeResolver($value);
+            },
             'price' => function (Range $range) {
                 return $this->priceResolver($range);
             },
-		];
-	}
+        ];
+    }
 
-	private function queryResolver(string $value): string
-	{
-		return "name ILIKE '%${value}%'";
-	}
+    private function queryResolver(string $value): string
+    {
+        return "name ILIKE '%${value}%'";
+    }
 
-	private function introducedAtResolver(Range $range): string
-	{
-		$rangeFrom = new DateTime($range->getStartValue());
+    private function introducedAtResolver(Range $range): string
+    {
+        $rangeFrom = new DateTime($range->getStartValue());
         $rangeTo = new DateTime($range->getEndValue());
 
         return sprintf(
@@ -65,12 +65,12 @@ final class ItemFilterResolver extends AbstractFilterResolver
             $range->getEndSign(),
             $rangeTo->format(DateTime::ATOM)
         );
-	}
+    }
 
-	private function typeResolver(string $value): string
-	{
-		return "type = '${value}'";
-	}
+    private function typeResolver(string $value): string
+    {
+        return "type = '${value}'";
+    }
 
 
     private function priceResolver(Range $range): string
@@ -116,29 +116,29 @@ use Apicart\FQL\Tokenizer\Tokenizer;
 
 final class FilterParser
 {
-	public static function parse(string $fql, AbstractFilterResolver $filterResolver): string
-	{
-		$tokenExtractor = new Full;
-		$tokenizer = new Tokenizer($tokenExtractor);
-		$tokenSequence = $tokenizer->tokenize($fql);
+    public static function parse(string $fql, AbstractFilterResolver $filterResolver): string
+    {
+        $tokenExtractor = new Full;
+        $tokenizer = new Tokenizer($tokenExtractor);
+        $tokenSequence = $tokenizer->tokenize($fql);
 
-		$parser = new Parser;
-		$syntaxTree = $parser->parse($tokenSequence);
+        $parser = new Parser;
+        $syntaxTree = $parser->parse($tokenSequence);
 
-		$visitor = new Aggregate(
-			[
-				new BinaryOperator,
-				new UnaryOperator,
-				new Group,
-				new Query,
-				new Phrase($filterResolver),
-				new Range($filterResolver),
-				new Word($filterResolver),
-			]
-		);
+        $visitor = new Aggregate(
+            [
+                new BinaryOperator,
+                new UnaryOperator,
+                new Group,
+                new Query,
+                new Phrase($filterResolver),
+                new Range($filterResolver),
+                new Word($filterResolver),
+            ]
+        );
 
-		return $visitor->visit($syntaxTree->getRootNode());
-	}
+        return $visitor->visit($syntaxTree->getRootNode());
+    }
 }
 ``` 
 
