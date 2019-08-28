@@ -8,16 +8,23 @@ abstract class AbstractFilterResolver
 {
 
     /**
-     * @param mixed $value
+     * @param array<int, mixed> $values
      */
-    public function resolve(string $column, $value): string
+    public function resolve(string $column, ...$values): string
     {
         $mapping = $this->getResolvers();
-        if (! isset($mapping[$column])) {
-            throw new InvalidArgumentException('Missing filter for "' . $column . '"');
+        foreach ($mapping as $pattern => $resolver) {
+            $matches = [];
+            if ((bool) preg_match_all("#^${pattern}$#", $column, $matches) === false) {
+                continue;
+            }
+
+            array_push($values, $matches);
+
+            return call_user_func_array($resolver, $values);
         }
 
-        return call_user_func($mapping[$column], $value);
+        throw new InvalidArgumentException($column);
     }
 
 

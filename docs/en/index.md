@@ -45,6 +45,9 @@ final class ItemFilterResolver extends AbstractFilterResolver
             'price' => function (Range $range) {
                 return $this->priceResolver($range);
             },
+            'brand(?:\[(.+)\])?\.id' => function (string $value, array $matches) { // resolver will match key "brand.id" or e.g. "brand[xyz].id" (value "xyz" will be passed via $matches property)
+                return $this->brandResolver($value);
+            },
         ];
     }
 
@@ -88,6 +91,12 @@ final class ItemFilterResolver extends AbstractFilterResolver
         }
 
         return $condition;
+    }
+
+    private function brandResolver(string $value, array $matches): string
+    {
+        $subKey = $matches[1][0] ?? 'default';
+        return "brand_${subKey} = '${value}'";
     }
 }
 ```
