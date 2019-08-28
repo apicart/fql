@@ -39,14 +39,14 @@ final class Phrase extends AbstractVisitor
         $token = $termNode->getToken();
         $domain = $token->getDomain();
 
-        if ($domain === '') {
+        if ($domain === '' || $domain === null) {
             $parent = $options['parent'] ?? false;
             if ($parent instanceof GroupNode) {
                 $tokenLeft = $parent->getTokenLeft();
                 $domain = $tokenLeft->getDomain();
             }
 
-            if ($domain === '') {
+            if ($domain === '' || $domain === null) {
                 throw new LogicException('Missing required domain');
             }
         }

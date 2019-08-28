@@ -22,7 +22,7 @@ Write filter query as simple string via Filter Query Language (FQL) syntax. Filt
 
 **Some FQL query example:**
 
-`q:"samsung" AND introducedAt:["2018-01-01 00:00:00" TO NOW] AND NOT (type:tv OR type:mobile) OR price:{10 TO *]`
+`q:"samsung" AND introducedAt:["2018-01-01 00:00:00" TO NOW] AND NOT type:(tv OR "mobile phone") OR price:{10 TO *]`
 
 
 ## Installation

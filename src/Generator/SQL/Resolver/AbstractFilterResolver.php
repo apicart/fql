@@ -14,7 +14,7 @@ abstract class AbstractFilterResolver
     {
         $mapping = $this->getResolvers();
         if (! isset($mapping[$column])) {
-            throw new InvalidArgumentException($column);
+            throw new InvalidArgumentException('Missing filter for "' . $column . '"');
         }
 
         return call_user_func($mapping[$column], $value);
