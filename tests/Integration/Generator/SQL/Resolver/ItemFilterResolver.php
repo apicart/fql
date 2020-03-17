@@ -12,16 +12,16 @@ final class ItemFilterResolver extends AbstractFilterResolver
     protected function getResolvers(): array
     {
         return [
-            'q' => function (string $value) {
+            'q' => function (string $value): string {
                 return $this->queryResolver($value);
             },
-            'introducedAt' => function (Range $range) {
+            'introducedAt' => function (Range $range): string {
                 return $this->introducedAtResolver($range);
             },
-            'type' => function (string $value) {
+            'type' => function (string $value): string {
                 return $this->typeResolver($value);
             },
-            'price' => function (Range $range) {
+            'price' => function (Range $range): string {
                 return $this->priceResolver($range);
             },
         ];
@@ -36,8 +36,8 @@ final class ItemFilterResolver extends AbstractFilterResolver
 
     private function introducedAtResolver(Range $range): string
     {
-        $rangeFrom = new DateTime($range->getStartValue());
-        $rangeTo = new DateTime($range->getEndValue());
+        $rangeFrom = new DateTime((string) $range->getStartValue());
+        $rangeTo = new DateTime((string) $range->getEndValue());
 
         return sprintf(
             "introduced_at %s '%s' AND introduced_at %s '%s'",

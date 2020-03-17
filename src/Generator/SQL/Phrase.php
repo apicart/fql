@@ -43,7 +43,9 @@ final class Phrase extends AbstractVisitor
             $parent = $options['parent'] ?? false;
             if ($parent instanceof GroupNode) {
                 $tokenLeft = $parent->getTokenLeft();
-                $domain = $tokenLeft->getDomain();
+                if ($tokenLeft !== null) {
+                    $domain = $tokenLeft->getDomain();
+                }
             }
 
             if ($domain === '' || $domain === null) {

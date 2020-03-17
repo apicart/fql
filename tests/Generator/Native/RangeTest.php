@@ -8,7 +8,9 @@ use Apicart\FQL\Token\Node\Mandatory;
 use Apicart\FQL\Token\Node\Term;
 use Apicart\FQL\Token\Token\Range as RangeToken;
 use Apicart\FQL\Token\Token\Word;
+use Apicart\FQL\Tokenizer\Tokenizer;
 use Apicart\FQL\Value\AbstractNode;
+use Apicart\FQL\Value\Token;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 
@@ -66,7 +68,10 @@ final class RangeTest extends TestCase
 
     public function visitWrongNodeDataprovider(): array
     {
-        return [[new Mandatory], [new Term(new Word('word', 0, '', 'a'))]];
+        $operand = $this->getMockForAbstractClass(AbstractNode::class);
+        $token = new Token(Tokenizer::TOKEN_TERM, '', 0);
+
+        return [[new Mandatory($operand, $token)], [new Term(new Word('word', 0, '', 'a'))]];
     }
 
 

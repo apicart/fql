@@ -19,7 +19,7 @@ final class Mandatory extends AbstractNode
     private $token;
 
 
-    public function __construct(?AbstractNode $operand = null, ?Token $token = null)
+    public function __construct(AbstractNode $operand, Token $token)
     {
         $this->operand = $operand;
         $this->token = $token;

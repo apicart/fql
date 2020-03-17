@@ -15,12 +15,12 @@ final class Group extends AbstractNode
     private $nodes = [];
 
     /**
-     * @var GroupBegin
+     * @var GroupBegin|null
      */
     private $tokenLeft;
 
     /**
-     * @var Token
+     * @var Token|null
      */
     private $tokenRight;
 
@@ -53,25 +53,25 @@ final class Group extends AbstractNode
     }
 
 
-    public function getTokenLeft(): GroupBegin
+    public function getTokenLeft(): ?GroupBegin
     {
         return $this->tokenLeft;
     }
 
 
-    public function setTokenLeft(GroupBegin $tokenLeft): void
+    public function setTokenLeft(?GroupBegin $tokenLeft): void
     {
         $this->tokenLeft = $tokenLeft;
     }
 
 
-    public function getTokenRight(): Token
+    public function getTokenRight(): ?Token
     {
         return $this->tokenRight;
     }
 
 
-    public function setTokenRight(Token $tokenRight): void
+    public function setTokenRight(?Token $tokenRight): void
     {
         $this->tokenRight = $tokenRight;
     }

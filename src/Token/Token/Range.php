@@ -29,12 +29,12 @@ final class Range extends Token
     private $endValue;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $startType;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $endType;
 
@@ -88,25 +88,25 @@ final class Range extends Token
     }
 
 
-    public function getStartType(): string
+    public function getStartType(): ?string
     {
         return $this->startType;
     }
 
 
-    public function setStartType(string $startType): void
+    public function setStartType(?string $startType): void
     {
         $this->startType = $startType;
     }
 
 
-    public function getEndType(): string
+    public function getEndType(): ?string
     {
         return $this->endType;
     }
 
 
-    public function setEndType(string $endType): void
+    public function setEndType(?string $endType): void
     {
         $this->endType = $endType;
     }

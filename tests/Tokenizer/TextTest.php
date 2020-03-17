@@ -42,12 +42,12 @@ final class TextTest extends FullTest
             '@user ' => [new WordToken('@user', 0, '', '@user'), new Token(Tokenizer::TOKEN_WHITESPACE, ' ', 5)],
             '@user(' => [new WordToken('@user', 0, '', '@user'), new GroupBeginToken('(', 5, '(', null)],
             '@user)' => [new WordToken('@user', 0, '', '@user'), new Token(Tokenizer::TOKEN_GROUP_END, ')', 5)],
-            '[a TO b]' => [
+            '[a  TO b]' => [
                 new WordToken('[a', 0, '', '[a'),
-                new Token(Tokenizer::TOKEN_WHITESPACE, ' ', 2),
-                new WordToken('TO', 3, '', 'TO'),
-                new Token(Tokenizer::TOKEN_WHITESPACE, ' ', 5),
-                new WordToken('b]', 6, '', 'b]'),
+                new Token(Tokenizer::TOKEN_WHITESPACE, '  ', 2),
+                new WordToken('TO', 4, '', 'TO'),
+                new Token(Tokenizer::TOKEN_WHITESPACE, ' ', 6),
+                new WordToken('b]', 7, '', 'b]'),
             ],
             '[a TO b}' => [
                 new WordToken('[a', 0, '', '[a'),
@@ -77,12 +77,12 @@ final class TextTest extends FullTest
                 new Token(Tokenizer::TOKEN_WHITESPACE, ' ', 14),
                 new WordToken('2017-01-05]', 15, '', '2017-01-05]'),
             ],
-            '[20 TO *]' => [
+            '[20    TO   *]' => [
                 new WordToken('[20', 0, '', '[20'),
-                new Token(Tokenizer::TOKEN_WHITESPACE, ' ', 3),
-                new WordToken('TO', 4, '', 'TO'),
-                new Token(Tokenizer::TOKEN_WHITESPACE, ' ', 6),
-                new WordToken('*]', 7, '', '*]'),
+                new Token(Tokenizer::TOKEN_WHITESPACE, '    ', 3),
+                new WordToken('TO', 7, '', 'TO'),
+                new Token(Tokenizer::TOKEN_WHITESPACE, '   ', 9),
+                new WordToken('*]', 12, '', '*]'),
             ],
             '[* TO 20]' => [
                 new WordToken('[*', 0, '', '[*'),

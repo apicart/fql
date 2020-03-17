@@ -39,11 +39,13 @@ final class Word extends AbstractVisitor
         $token = $termNode->getToken();
         $domain = $token->getDomain();
 
-        if ($domain === '' || $domain === null) {
+        if ($domain === '') {
             $parent = $options['parent'] ?? false;
             if ($parent instanceof GroupNode) {
                 $tokenLeft = $parent->getTokenLeft();
-                $domain = $tokenLeft->getDomain();
+                if ($tokenLeft !== null) {
+                    $domain = $tokenLeft->getDomain();
+                }
             }
 
             if ($domain === '' || $domain === null) {

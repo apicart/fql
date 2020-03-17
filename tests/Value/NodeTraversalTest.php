@@ -10,6 +10,7 @@ use Apicart\FQL\Token\Node\Mandatory;
 use Apicart\FQL\Token\Node\Prohibited;
 use Apicart\FQL\Token\Node\Query;
 use Apicart\FQL\Token\Node\Term;
+use Apicart\FQL\Tokenizer\Tokenizer;
 use Apicart\FQL\Value\AbstractNode;
 use Apicart\FQL\Value\Token;
 use PHPUnit\Framework\TestCase;
@@ -34,7 +35,8 @@ final class NodeTraversalTest extends TestCase
     {
         $leftOperand = $this->getMockForAbstractClass(AbstractNode::class);
         $rightOperand = $this->getMockForAbstractClass(AbstractNode::class);
-        $nodes = (new LogicalAnd($leftOperand, $rightOperand))->getNodes();
+        $token = new Token(Tokenizer::TOKEN_TERM, '', 0);
+        $nodes = (new LogicalAnd($leftOperand, $rightOperand, $token))->getNodes();
 
         self::assertSame($leftOperand, $nodes[0]);
         self::assertSame($rightOperand, $nodes[1]);
@@ -44,7 +46,8 @@ final class NodeTraversalTest extends TestCase
     public function testLogicalNotNode(): void
     {
         $operand = $this->getMockForAbstractClass(AbstractNode::class);
-        $nodes = (new LogicalNot($operand))->getNodes();
+        $token = new Token(Tokenizer::TOKEN_TERM, '', 0);
+        $nodes = (new LogicalNot($operand, $token))->getNodes();
 
         self::assertSame($operand, $nodes[0]);
     }
@@ -54,7 +57,8 @@ final class NodeTraversalTest extends TestCase
     {
         $leftOperand = $this->getMockForAbstractClass(AbstractNode::class);
         $rightOperand = $this->getMockForAbstractClass(AbstractNode::class);
-        $nodes = (new LogicalOr($leftOperand, $rightOperand))->getNodes();
+        $token = new Token(Tokenizer::TOKEN_TERM, '', 0);
+        $nodes = (new LogicalOr($leftOperand, $rightOperand, $token))->getNodes();
 
         self::assertSame($leftOperand, $nodes[0]);
         self::assertSame($rightOperand, $nodes[1]);
@@ -64,7 +68,8 @@ final class NodeTraversalTest extends TestCase
     public function testMandatoryNode(): void
     {
         $operand = $this->getMockForAbstractClass(AbstractNode::class);
-        $nodes = (new Mandatory($operand))->getNodes();
+        $token = new Token(Tokenizer::TOKEN_TERM, '', 0);
+        $nodes = (new Mandatory($operand, $token))->getNodes();
 
         self::assertSame($operand, $nodes[0]);
     }
@@ -73,7 +78,8 @@ final class NodeTraversalTest extends TestCase
     public function testProhibitedNode(): void
     {
         $operand = $this->getMockForAbstractClass(AbstractNode::class);
-        $nodes = (new Prohibited($operand))->getNodes();
+        $token = new Token(Tokenizer::TOKEN_TERM, '', 0);
+        $nodes = (new Prohibited($operand, $token))->getNodes();
 
         self::assertSame($operand, $nodes[0]);
     }

@@ -29,8 +29,14 @@ final class Group extends AbstractVisitor
             $clauses[] = $subVisitor->visit($subNode, $subVisitor, $options);
         }
         $clauses = implode(' ', $clauses);
-        $domainPrefix = $node->getTokenLeft()->getDomain() === '' ? '' : "{$node->getTokenLeft()->getDomain()}:";
-        return "{$domainPrefix}{$node->getTokenLeft()->getDelimiter()}{$clauses}{$node->getTokenRight()->getLexeme()}";
+        $tokenLeft = $node->getTokenLeft();
+        $tokenRight = $node->getTokenRight();
+
+        $domainPrefix = $tokenLeft === null || $tokenLeft->getDomain() === '' ? '' : "{$tokenLeft->getDomain()}:";
+        $delimiter = $tokenLeft === null ? '' : $tokenLeft->getDelimiter();
+        $lexeme = $tokenRight === null ? '' : $tokenRight->getLexeme();
+
+        return "{$domainPrefix}{$delimiter}{$clauses}{$lexeme}";
     }
 
 }

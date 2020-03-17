@@ -20,10 +20,13 @@ final class BinaryOperator extends AbstractVisitor
     {
         /** @var LogicalAnd|LogicalOr $logicalNode */
         $logicalNode = $node;
-        $clauses = [
-            $subVisitor->visit($logicalNode->getLeftOperand(), $subVisitor, $options),
-            $subVisitor->visit($logicalNode->getRightOperand(), $subVisitor, $options),
-        ];
+        $clauses = [];
+        if ($subVisitor !== null) {
+            $clauses = [
+                $subVisitor->visit($logicalNode->getLeftOperand(), $subVisitor, $options),
+                $subVisitor->visit($logicalNode->getRightOperand(), $subVisitor, $options),
+            ];
+        }
 
         return implode(" {$logicalNode->getToken()->getLexeme()} ", $clauses);
     }

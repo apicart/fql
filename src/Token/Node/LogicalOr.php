@@ -24,11 +24,7 @@ final class LogicalOr extends AbstractNode
     private $token;
 
 
-    public function __construct(
-        ?AbstractNode $leftOperand = null,
-        ?AbstractNode $rightOperand = null,
-        ?Token $token = null
-    ) {
+    public function __construct(AbstractNode $leftOperand, AbstractNode $rightOperand, Token $token) {
         $this->leftOperand = $leftOperand;
         $this->rightOperand = $rightOperand;
         $this->token = $token;

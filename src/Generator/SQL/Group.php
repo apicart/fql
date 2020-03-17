@@ -23,12 +23,19 @@ final class Group extends AbstractVisitor
         $clauses = [];
         foreach ($groupNode->getNodes() as $subNode) {
             $options['parent'] = $node;
-            $clauses[] = $subVisitor->visit($subNode, $subVisitor, $options);
+            if ($subVisitor !== null) {
+                $clauses[] = $subVisitor->visit($subNode, $subVisitor, $options);
+            }
         }
 
         $clauses = implode(' ', $clauses);
+        $tokenLeft = $groupNode->getTokenLeft();
+        $tokenRight = $groupNode->getTokenRight();
 
-        return "{$groupNode->getTokenLeft()->getDelimiter()}{$clauses}{$groupNode->getTokenRight()->getLexeme()}";
+        $delimiter = $tokenLeft === null ? '' : $tokenLeft->getDelimiter();
+        $lexeme = $tokenRight === null ? '' : $tokenRight->getLexeme();
+
+        return "{$delimiter}{$clauses}{$lexeme}";
     }
 
 }

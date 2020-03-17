@@ -376,6 +376,10 @@ final class Parser implements ParserInterface
     private function shift()
     {
         $token = array_shift($this->tokens);
+        if ($token === null) {
+            return null;
+        }
+
         $shift = self::$shifts[$token->getType()];
 
         return $this->{$shift}($token);
@@ -385,7 +389,7 @@ final class Parser implements ParserInterface
     private function reduce(AbstractNode $node): void
     {
         $previousNode = null;
-        $reductionIndex = null;
+        $reductionIndex = 0;
 
         while ($node instanceof AbstractNode) {
             // Reset reduction index on first iteration or on Node change
@@ -568,7 +572,7 @@ final class Parser implements ParserInterface
         $tokens = [];
         while ($this->isToken(reset($this->tokens), $tokenMask)) {
             $token = array_shift($this->tokens);
-            if ((bool) ($token->getType() & self::$tokenShortcuts['operatorBinary'])) {
+            if ($token !== null && (bool) ($token->getType() & self::$tokenShortcuts['operatorBinary'])) {
                 $tokens[] = $token;
             }
         }

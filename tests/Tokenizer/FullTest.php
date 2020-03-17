@@ -59,7 +59,7 @@ class FullTest extends TestCase
                 ],
             ],
             ['word\\ word', [new WordToken('word\\ word', 0, '', 'word word')]],
-            ['[a TO b]', [new RangeToken('[a TO b]', 0, '', 'a', 'b', 'inclusive', 'inclusive')]],
+            ['[a  TO b]', [new RangeToken('[a  TO b]', 0, '', 'a', 'b', 'inclusive', 'inclusive')]],
             ['[a TO b}', [new RangeToken('[a TO b}', 0, '', 'a', 'b', 'inclusive', 'exclusive')]],
             ['{a TO b}', [new RangeToken('{a TO b}', 0, '', 'a', 'b', 'exclusive', 'exclusive')]],
             ['{a TO b]', [new RangeToken('{a TO b]', 0, '', 'a', 'b', 'exclusive', 'inclusive')]],
@@ -77,7 +77,7 @@ class FullTest extends TestCase
                     ),
                 ],
             ],
-            ['[20 TO *]', [new RangeToken('[20 TO *]', 0, '', '20', '*', 'inclusive', 'inclusive')]],
+            ['[20    TO   *]', [new RangeToken('[20    TO   *]', 0, '', '20', '*', 'inclusive', 'inclusive')]],
             ['[* TO 20]', [new RangeToken('[* TO 20]', 0, '', '*', '20', 'inclusive', 'inclusive')]],
             ['"phrase"', [new PhraseToken('"phrase"', 0, '', '"', 'phrase')]],
             [
