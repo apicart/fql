@@ -35,7 +35,7 @@ final class Full extends AbstractTokenExtractor
         '/(?<lexeme>(?:(?<domain>[a-zA-Z_][a-zA-Z0-9_\-.\[\]\*]*):)?(?<quote>(?<!\\\\)["])(?<phrase>.*?)(?:(?<!\\\\)' .
         '(?P=quote)))/Aus' => Tokenizer::TOKEN_TERM,
         '/(?<lexeme>(?:(?<domain>[a-zA-Z_][a-zA-Z0-9_\-.\[\]\*]*):)?(?<rangeStartSymbol>[\[\{])' .
-        '(?<rangeFrom>([a-zA-Z0-9\,\._-]+|\*)|(?<quoteFrom>(?<!\\\\)["]).*(?:(?<!\\\\)(?P=quoteFrom))) TO ' .
+        '(?<rangeFrom>([a-zA-Z0-9\,\._-]+|\*)|(?<quoteFrom>(?<!\\\\)["]).*(?:(?<!\\\\)(?P=quoteFrom)))[\s]+TO[\s]+' .
         '(?<rangeTo>([a-zA-Z0-9\,\._-]+|\*)|(?<quoteTo>(?<!\\\\)["]).*(?:(?<!\\\\)(?P=quoteTo)))' .
         '(?<rangeEndSymbol>[\]\}]))/Aus' => Tokenizer::TOKEN_TERM,
         '/(?<lexeme>(?:(?<domain>[a-zA-Z_][a-zA-Z0-9_\-.\[\]\*]*):)?(?<word>(?:\\\\\\\\|\\\\ |\\\\\(|\\\\\)|\\\\"|' .
@@ -66,6 +66,7 @@ final class Full extends AbstractTokenExtractor
                     $this->getRangeTypeBySymbol($data['rangeStartSymbol']),
                     $this->getRangeTypeBySymbol($data['rangeEndSymbol'])
                 );
+
             case isset($data['word']):
                 return new Word(
                     $lexeme,
@@ -74,6 +75,7 @@ final class Full extends AbstractTokenExtractor
                     // un-backslash special characters
                     preg_replace('/(?:\\\\(\\\\|(["+\-!():#@ ])))/', '$1', $data['word'])
                 );
+
             case isset($data['phrase']):
                 $quote = $data['quote'];
                 return new Phrase(
@@ -84,8 +86,10 @@ final class Full extends AbstractTokenExtractor
                     // un-backslash quote
                     preg_replace('/(?:\\\\([' . $quote . ']))/', '$1', $data['phrase'])
                 );
+
             case isset($data['tag']):
                 return new Tag($lexeme, $position, $data['marker'], $data['tag']);
+
             case isset($data['user']):
                 return new User($lexeme, $position, $data['marker'], $data['user']);
         }
