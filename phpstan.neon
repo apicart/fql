@@ -3,12 +3,11 @@ includes:
 
 parameters:
 	checkMissingIterableValueType: false
+	reportUnmatchedIgnoredErrors: false
 	excludes_analyse:
 		- %rootDir%/temp/*
 
 	ignoreErrors:
-		- '#^Method [a-zA-Z0-9\\]+::findBy[a-zA-Z]+\(\) should return [a-zA-Z0-9\\]+\|null but returns object\|null.#'
 		- '#^Variable method call on#'
 		- '#^Call to an undefined method PHPUnit_Framework_MockObject_MockObject::extract\(\)\.$#'
-
-	reportUnmatchedIgnoredErrors: FALSE
+		- '#PHPUnit\\Framework\\MockObject\\MockObject given\.#'
