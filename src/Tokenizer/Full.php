@@ -36,8 +36,8 @@ final class Full extends AbstractTokenExtractor
         '/(?<lexeme>(?:(?<domain>[a-zA-Z_\-.\[\]\*%][a-zA-Z0-9_\-.\[\]\*%]*):)?(?<quote>(?<!\\\\)["])' .
         '(?<phrase>.*?)(?:(?<!\\\\)(?P=quote)))/Aus' => Tokenizer::TOKEN_TERM,
         '/(?<lexeme>(?:(?<domain>[a-zA-Z_\-.\[\]\*%][a-zA-Z0-9_\-.\[\]\*%]*):)?(?<rangeStartSymbol>[\[\{])' .
-        '(?<rangeFrom>([a-zA-Z0-9\,\._-]+|\*)|(?<quoteFrom>(?<!\\\\)["]).*(?:(?<!\\\\)(?P=quoteFrom)))[\s]+TO[\s]+' .
-        '(?<rangeTo>([a-zA-Z0-9\,\._-]+|\*)|(?<quoteTo>(?<!\\\\)["]).*(?:(?<!\\\\)(?P=quoteTo)))' .
+        '(?<rangeFrom>([a-zA-Z0-9\,\._-]+|\*)|(?<quoteFrom>(?<!\\\\)["]).*?(?:(?<!\\\\)(?P=quoteFrom)))[\s]+TO[\s]+' .
+        '(?<rangeTo>([a-zA-Z0-9\,\._-]+|\*)|(?<quoteTo>(?<!\\\\)["]).*?(?:(?<!\\\\)(?P=quoteTo)))' .
         '(?<rangeEndSymbol>[\]\}]))/Aus' => Tokenizer::TOKEN_TERM,
         '/(?<lexeme>(?:(?<domain>[a-zA-Z_\-.\[\]\*%][a-zA-Z0-9_\-.\[\]\*%]*):)?' .
         '(?<word>(?:\\\\\\\\|\\\\ |\\\\\(|\\\\\)|\\\\"|[^"()\s])+?))(?:(?<!\\\\)["]|\(|\)|$|\s)/Au'
