@@ -26,7 +26,7 @@ abstract class AbstractTokenExtractor
                 continue;
             }
             if (isset($matches['domain'])) {
-                $matches['domain'] = trim($matches['domain'], '"');
+                $matches['domain'] = trim($matches['domain'], "'");
             }
 
             return $this->createToken($type, $position, $matches);
