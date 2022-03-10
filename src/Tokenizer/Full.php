@@ -27,19 +27,19 @@ final class Full extends AbstractTokenExtractor
         '/(?<lexeme>NOT)(?:[\s"()+\-!]|$)/Au' => Tokenizer::TOKEN_LOGICAL_NOT,
         '/(?<lexeme>(?:AND|&&))(?:[\s"()+\-!]|$)/Au' => Tokenizer::TOKEN_LOGICAL_AND,
         '/(?<lexeme>(?:OR|\|\|))(?:[\s"()+\-!]|$)/Au' => Tokenizer::TOKEN_LOGICAL_OR,
-        '/(?<lexeme>(?:(?<domain>[a-zA-Z_\-.\[\]\*%][a-zA-Z0-9_\-.\[\]\*%]*):)?(?<delimiter>\())/Au'
+        '/(?<lexeme>(?:(?<domain>(?:[a-zA-Z_\-.\[\]\*%][a-zA-Z0-9_\-.\[\]\*%]*|".+")):)?(?<delimiter>\())/Au'
         => Tokenizer::TOKEN_GROUP_BEGIN,
         '/(?<lexeme>(?:(?<marker>(?<!\\\\)\#)(?<tag>[a-zA-Z0-9_][a-zA-Z0-9_\-.]*)))(?:[\s"()+!]|$)/Au'
         => Tokenizer::TOKEN_TERM,
         '/(?<lexeme>(?:(?<marker>(?<!\\\\)@)(?<user>[a-zA-Z0-9_][a-zA-Z0-9_\-.]*)))(?:[\s"()+!]|$)/Au'
         => Tokenizer::TOKEN_TERM,
-        '/(?<lexeme>(?:(?<domain>[a-zA-Z_\-.\[\]\*%][a-zA-Z0-9_\-.\[\]\*%]*):)?(?<quote>(?<!\\\\)["])' .
+        '/(?<lexeme>(?:(?<domain>(?:[a-zA-Z_\-.\[\]\*%][a-zA-Z0-9_\-.\[\]\*%]*|".+")):)?(?<quote>(?<!\\\\)["])' .
         '(?<phrase>.*?)(?:(?<!\\\\)(?P=quote)))/Aus' => Tokenizer::TOKEN_TERM,
-        '/(?<lexeme>(?:(?<domain>[a-zA-Z_\-.\[\]\*%][a-zA-Z0-9_\-.\[\]\*%]*):)?(?<rangeStartSymbol>[\[\{])' .
+        '/(?<lexeme>(?:(?<domain>(?:[a-zA-Z_\-.\[\]\*%][a-zA-Z0-9_\-.\[\]\*%]*|".+")):)?(?<rangeStartSymbol>[\[\{])' .
         '(?<rangeFrom>([a-zA-Z0-9\,\._-]+|\*)|(?<quoteFrom>(?<!\\\\)["]).*?(?:(?<!\\\\)(?P=quoteFrom)))[\s]+TO[\s]+' .
         '(?<rangeTo>([a-zA-Z0-9\,\._-]+|\*)|(?<quoteTo>(?<!\\\\)["]).*?(?:(?<!\\\\)(?P=quoteTo)))' .
         '(?<rangeEndSymbol>[\]\}]))/Aus' => Tokenizer::TOKEN_TERM,
-        '/(?<lexeme>(?:(?<domain>[a-zA-Z_\-.\[\]\*%][a-zA-Z0-9_\-.\[\]\*%]*):)?' .
+        '/(?<lexeme>(?:(?<domain>(?:[a-zA-Z_\-.\[\]\*%][a-zA-Z0-9_\-.\[\]\*%]*|".+")):)?' .
         '(?<word>(?:\\\\\\\\|\\\\ |\\\\\(|\\\\\)|\\\\"|[^"()\s])+?))(?:(?<!\\\\)["]|\(|\)|$|\s)/Au'
         => Tokenizer::TOKEN_TERM,
     ];

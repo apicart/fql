@@ -25,6 +25,10 @@ abstract class AbstractTokenExtractor
             if ($success === 0) {
                 continue;
             }
+            if (isset($matches['domain'])) {
+                $matches['domain'] = trim($matches['domain'], '"');
+            }
+
             return $this->createToken($type, $position, $matches);
         }
         return new Token(Tokenizer::TOKEN_BAILOUT, mb_substr($string, $position, 1), $position);

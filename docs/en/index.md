@@ -4,7 +4,7 @@ Write filter query as simple string via Filter Query Language (FQL) syntax. Filt
 
 **Simple FQL example:**
 
-`q:"samsung" AND introducedAt:["2019-01-01 00:00:00" TO NOW] AND NOT type:(tv OR "mobile phone") OR price:{10 TO *]`
+`q:"samsung" AND introducedAt:["2019-01-01 00:00:00" TO NOW] AND NOT type:(tv OR "mobile phone") OR price:{10 TO *] OR "some another-(key)":"*contains this*"`
 
 
 ## Syntax
