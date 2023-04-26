@@ -15,7 +15,7 @@ abstract class AbstractFilterResolver
         $mapping = $this->getResolvers();
         foreach ($mapping as $pattern => $resolver) {
             $matches = [];
-            if ((bool) preg_match_all("#^${pattern}$#", $column, $matches, PREG_SET_ORDER) === false) {
+            if ((bool) preg_match_all("#^{$pattern}$#", $column, $matches, PREG_SET_ORDER) === false) {
                 continue;
             }
 
