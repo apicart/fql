@@ -18,11 +18,17 @@ final class Word extends Token
      */
     private $word;
 
+    /**
+     * @var Flags|null
+     */
+    private $flags;
 
-    public function __construct(string $lexeme, int $position, string $domain, string $word)
+
+    public function __construct(string $lexeme, int $position, string $domain, string $word, ?Flags $flags = null)
     {
         $this->domain = $domain;
         $this->word = $word;
+        $this->flags = $flags;
 
         parent::__construct(Tokenizer::TOKEN_TERM, $lexeme, $position);
     }
@@ -37,6 +43,12 @@ final class Word extends Token
     public function getWord(): string
     {
         return $this->word;
+    }
+
+
+    public function getFlags(): ?Flags
+    {
+        return $this->flags;
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace Apicart\FQL\Tokenizer;
 
+use Apicart\FQL\Token\Token\Flags;
 use Apicart\FQL\Token\Token\Phrase;
 use Apicart\FQL\Token\Token\Range;
 use Apicart\FQL\Token\Token\Tag;
@@ -34,13 +35,15 @@ final class Full extends AbstractTokenExtractor
         '/(?<lexeme>(?:(?<marker>(?<!\\\\)@)(?<user>[a-zA-Z0-9_][a-zA-Z0-9_\-.]*)))(?:[\s"()+!]|$)/Au'
         => Tokenizer::TOKEN_TERM,
         '/(?<lexeme>(?:(?<domain>(?:[a-zA-Z_\-.\[\]\*%][a-zA-Z0-9_\-.\[\]\*%]*|\'[^\']+\')):)?(?<quote>(?<!\\\\)["])' .
-        '(?<phrase>.*?)(?:(?<!\\\\)(?P=quote)))/Aus' => Tokenizer::TOKEN_TERM,
+        '(?<phrase>.*?)(?:(?<!\\\\)(?P=quote))(?:(?<marker>(?<!\\\\)\#)(?<flags>[a-zA-Z0-9_][a-zA-Z0-9_\-.]*))?)/Aus'
+        => Tokenizer::TOKEN_TERM,
         '/(?<lexeme>(?:(?<domain>(?:[a-zA-Z_\-.\[\]\*%][a-zA-Z0-9_\-.\[\]\*%]*|\'[^\']+\')):)?(?<rangeStartSymbol>[\[\{])' .
         '(?<rangeFrom>([a-zA-Z0-9\,\._-]+|\*)|(?<quoteFrom>(?<!\\\\)["]).*?(?:(?<!\\\\)(?P=quoteFrom)))[\s]+TO[\s]+' .
         '(?<rangeTo>([a-zA-Z0-9\,\._-]+|\*)|(?<quoteTo>(?<!\\\\)["]).*?(?:(?<!\\\\)(?P=quoteTo)))' .
         '(?<rangeEndSymbol>[\]\}]))/Aus' => Tokenizer::TOKEN_TERM,
         '/(?<lexeme>(?:(?<domain>(?:[a-zA-Z_\-.\[\]\*%][a-zA-Z0-9_\-.\[\]\*%]*|\'[^\']+\')):)?' .
-        '(?<word>(?:\\\\\\\\|\\\\ |\\\\\(|\\\\\)|\\\\"|[^"()\s])+?))(?:(?<!\\\\)["]|\(|\)|$|\s)/Au'
+        '(?<word>(?:\\\\\\\\|\\\\ |\\\\\(|\\\\\)|\\\\"|[^"()\s])+?))' .
+        '(?:(?<marker>(?<!\\\\)\#)(?<flags>[a-zA-Z0-9_][a-zA-Z0-9_\-.]*))?(?:(?<!\\\\)["]|\(|\)|$|\s)/Au'
         => Tokenizer::TOKEN_TERM,
     ];
 
@@ -75,7 +78,8 @@ final class Full extends AbstractTokenExtractor
                     $position,
                     $data['domain'],
                     // un-backslash special characters
-                    preg_replace('/(?:\\\\(\\\\|(["+\-!():#@ ])))/', '$1', $data['word'])
+                    preg_replace('/(?:\\\\(\\\\|(["+\-!():#@ ])))/', '$1', $data['word']),
+                    isset($data['marker'], $data['flags']) ? new Flags($data['marker'], $data['flags']) : null
                 );
 
             case isset($data['phrase']):
@@ -86,7 +90,8 @@ final class Full extends AbstractTokenExtractor
                     $data['domain'],
                     $quote,
                     // un-backslash quote
-                    preg_replace('/(?:\\\\([' . $quote . ']))/', '$1', $data['phrase'])
+                    preg_replace('/(?:\\\\([' . $quote . ']))/', '$1', $data['phrase']),
+                    isset($data['marker'], $data['flags']) ? new Flags($data['marker'], $data['flags']) : null
                 );
 
             case isset($data['tag']):

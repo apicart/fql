@@ -23,12 +23,25 @@ final class Phrase extends Token
      */
     private $phrase;
 
+    /**
+     * @var Flags|null
+     */
+    private $flags;
 
-    public function __construct(string $lexeme, int $position, string $domain, string $quote, string $phrase)
+
+    public function __construct(
+        string $lexeme,
+        int $position,
+        string $domain,
+        string $quote,
+        string $phrase,
+        ?Flags $flags = null
+    )
     {
         $this->domain = $domain;
         $this->quote = $quote;
         $this->phrase = $phrase;
+        $this->flags = $flags;
 
         parent::__construct(Tokenizer::TOKEN_TERM, $lexeme, $position);
     }
@@ -49,6 +62,12 @@ final class Phrase extends Token
     public function getPhrase(): string
     {
         return $this->phrase;
+    }
+
+
+    public function getFlags(): ?Flags
+    {
+        return $this->flags;
     }
 
 }
