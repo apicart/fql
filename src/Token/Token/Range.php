@@ -38,6 +38,11 @@ final class Range extends Token
      */
     private $endType;
 
+    /**
+     * @var Flags|null
+     */
+    private $flags;
+
 
     /**
      * @param int|float|string $startValue
@@ -50,7 +55,8 @@ final class Range extends Token
         $startValue,
         $endValue,
         ?string $startType,
-        ?string $endType
+        ?string $endType,
+        ?Flags $flags = null
     ) {
         $this->ensureValidType($startType);
         $this->ensureValidType($endType);
@@ -61,6 +67,7 @@ final class Range extends Token
         $this->endValue = $endValue;
         $this->startType = $startType;
         $this->endType = $endType;
+        $this->flags = $flags;
     }
 
 
@@ -133,6 +140,12 @@ final class Range extends Token
     public function isEndDefined(): bool
     {
         return $this->getEndValue() !== '*';
+    }
+
+
+    public function getFlags(): ?Flags
+    {
+        return $this->flags;
     }
 
 

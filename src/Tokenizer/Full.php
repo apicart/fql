@@ -40,7 +40,8 @@ final class Full extends AbstractTokenExtractor
         '/(?<lexeme>(?:(?<domain>(?:[a-zA-Z_\-.\[\]\*%][a-zA-Z0-9_\-.\[\]\*%]*|\'[^\']+\')):)?(?<rangeStartSymbol>[\[\{])' .
         '(?<rangeFrom>([a-zA-Z0-9\,\._-]+|\*)|(?<quoteFrom>(?<!\\\\)["]).*?(?:(?<!\\\\)(?P=quoteFrom)))[\s]+TO[\s]+' .
         '(?<rangeTo>([a-zA-Z0-9\,\._-]+|\*)|(?<quoteTo>(?<!\\\\)["]).*?(?:(?<!\\\\)(?P=quoteTo)))' .
-        '(?<rangeEndSymbol>[\]\}]))/Aus' => Tokenizer::TOKEN_TERM,
+        '(?<rangeEndSymbol>[\]\}])(?:(?<marker>(?<!\\\\)\#)(?<flags>[a-zA-Z0-9_][a-zA-Z0-9_\-.]*))?)/Aus'
+        => Tokenizer::TOKEN_TERM,
         '/(?<lexeme>(?:(?<domain>(?:[a-zA-Z_\-.\[\]\*%][a-zA-Z0-9_\-.\[\]\*%]*|\'[^\']+\')):)?' .
         '(?<word>(?:\\\\\\\\|\\\\ |\\\\\(|\\\\\)|\\\\"|[^"()\s])+?))' .
         '(?:(?<marker>(?<!\\\\)\#)(?<flags>[a-zA-Z0-9_][a-zA-Z0-9_\-.]*))?(?:(?<!\\\\)["]|\(|\)|$|\s)/Au'
@@ -69,7 +70,8 @@ final class Full extends AbstractTokenExtractor
                     is_array($startValue) ? reset($startValue) : $startValue,
                     is_array($endValue) ? reset($endValue) : $endValue,
                     $this->getRangeTypeBySymbol($data['rangeStartSymbol']),
-                    $this->getRangeTypeBySymbol($data['rangeEndSymbol'])
+                    $this->getRangeTypeBySymbol($data['rangeEndSymbol']),
+                    isset($data['marker'], $data['flags']) ? new Flags($data['marker'], $data['flags']) : null
                 );
 
             case isset($data['word']):
