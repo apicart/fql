@@ -19,8 +19,19 @@ final class Range extends Token
 
     public const DATETIME_FORMAT = 'Y-m-d\TH:i:s\Z';
     public const DATETIME_REGEX = '/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(\.\d{1,9})?Z$/';
+
     public const RELATIVE_DATE_SEPARATOR = '|';
     public const RELATIVE_DATE_REGEX = '/^(today|week|month|year)(\|(\+|-)?\d+)?$/';
+    public const RELATIVE_DATE_TODAY = 'today';
+    public const RELATIVE_DATE_WEEK = 'week';
+    public const RELATIVE_DATE_MONTH = 'month';
+    public const RELATIVE_DATE_YEAR = 'year';
+    public const RELATIVE_DATE_VALUES = [
+        self::RELATIVE_DATE_TODAY,
+        self::RELATIVE_DATE_WEEK,
+        self::RELATIVE_DATE_MONTH,
+        self::RELATIVE_DATE_YEAR,
+    ];
 
     /**
      * @var string
