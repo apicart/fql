@@ -124,9 +124,12 @@ final class Range extends Token
         return null;
     }
 
+    /**
+     * @return array{base: string, offset: int}|null
+     */
     public function getStartRelativeDateValue(): ?array
     {
-        return $this->parseRelativeDateValue($this->getStartValue());
+        return self::parseRelativeDateValue($this->getStartValue());
     }
 
 
@@ -156,9 +159,12 @@ final class Range extends Token
         return null;
     }
 
+    /**
+     * @return array{base: string, offset: int}|null
+     */
     public function getEndRelativeDateValue(): ?array
     {
-        return $this->parseRelativeDateValue($this->getEndValue());
+        return self::parseRelativeDateValue($this->getEndValue());
     }
 
 
@@ -245,7 +251,10 @@ final class Range extends Token
         return preg_match(self::RELATIVE_DATE_REGEX, $this->getEndValue()) === 1;
     }
 
-    public function parseRelativeDateValue(string $value): ?array
+    /**
+     * @return array{base: string, offset: int}|null
+     */
+    public static function parseRelativeDateValue(string $value): ?array
     {
         if (preg_match(self::RELATIVE_DATE_REGEX, $value) === 1) {
             $parts = explode(self::RELATIVE_DATE_SEPARATOR, $value);
