@@ -2,6 +2,7 @@
 
 namespace Apicart\FQL\Token\Token;
 
+use DateTimeZone;
 use DateTimeImmutable;
 use Apicart\FQL\Value\Token;
 use InvalidArgumentException;
@@ -124,12 +125,13 @@ final class Range extends Token
         return null;
     }
 
-    /**
-     * @return array{base: string, offset: int}|null
-     */
-    public function getStartRelativeDateValue(): ?array
+    public function getStartRelativeDateValue(): ?DateTimeImmutable
     {
-        return self::parseRelativeDateValue($this->getStartValue());
+        if ($this->isStartInRelativeDateFormat()) {
+            return self::getRelativeDate($this->getStartValue());
+        }
+
+        return null;
     }
 
 
@@ -159,12 +161,14 @@ final class Range extends Token
         return null;
     }
 
-    /**
-     * @return array{base: string, offset: int}|null
-     */
-    public function getEndRelativeDateValue(): ?array
+    
+    public function getEndRelativeDateValue(): ?DateTimeImmutable
     {
-        return self::parseRelativeDateValue($this->getEndValue());
+        if ($this->isEndInRelativeDateFormat()) {
+            return self::getRelativeDate($this->getEndValue());
+        }
+
+        return null;
     }
 
 
@@ -264,6 +268,28 @@ final class Range extends Token
             return ['base' => $base, 'offset' => $offset];
         }
 
+        return null;
+    }
+
+
+    public static function getRelativeDate(string $value): ?DateTimeImmutable
+    {
+        $parsed = self::parseRelativeDateValue($value);
+        if ($parsed !== null) {
+            $base = $parsed['base'];
+            $offset = $parsed['offset'];
+            $date = new DateTimeImmutable('now', new DateTimeZone('UTC'));
+            switch ($base) {
+                case self::RELATIVE_DATE_TODAY:
+                    return $date->modify(($offset >= 0 ? '+' : '') . $offset . ' days');
+                case self::RELATIVE_DATE_WEEK:
+                    return $date->modify('this week')->modify(($offset >= 0 ? '+' : '') . $offset . ' weeks');
+                case self::RELATIVE_DATE_MONTH:
+                    return $date->modify('first day of this month')->modify(($offset >= 0 ? '+' : '') . $offset . ' months');
+                case self::RELATIVE_DATE_YEAR:
+                    return $date->modify('first day of january this year')->modify(($offset >= 0 ? '+' : '') . $offset . ' years');
+            }
+        }
         return null;
     }
 
