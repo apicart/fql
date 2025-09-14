@@ -126,15 +126,7 @@ final class Range extends Token
 
     public function getStartRelativeDateValue(): ?array
     {
-        if ($this->isStartInRelativeDateFormat()) {
-            $parts = explode(self::RELATIVE_DATE_SEPARATOR, $this->getStartValue());
-            $value = $parts[0];
-            $offset = isset($parts[1]) ? (int) $parts[1] : 0;
-
-            return ['value' => $value, 'offset' => $offset];
-        }
-
-        return null;
+        return $this->parseRelativeDateValue($this->getStartValue());
     }
 
 
@@ -166,15 +158,7 @@ final class Range extends Token
 
     public function getEndRelativeDateValue(): ?array
     {
-        if ($this->isEndInRelativeDateFormat()) {
-            $parts = explode(self::RELATIVE_DATE_SEPARATOR, $this->getEndValue());
-            $value = $parts[0];
-            $offset = isset($parts[1]) ? (int) $parts[1] : 0;
-
-            return ['value' => $value, 'offset' => $offset];
-        }
-
-        return null;
+        return $this->parseRelativeDateValue($this->getEndValue());
     }
 
 
@@ -261,6 +245,18 @@ final class Range extends Token
         return preg_match(self::RELATIVE_DATE_REGEX, $this->getEndValue()) === 1;
     }
 
+    public function parseRelativeDateValue(string $value): ?array
+    {
+        if (preg_match(self::RELATIVE_DATE_REGEX, $value) === 1) {
+            $parts = explode(self::RELATIVE_DATE_SEPARATOR, $value);
+            $base = $parts[0];
+            $offset = isset($parts[1]) ? (int) $parts[1] : 0;
+
+            return ['base' => $base, 'offset' => $offset];
+        }
+
+        return null;
+    }
 
     private function ensureValidType(?string $type): void
     {
