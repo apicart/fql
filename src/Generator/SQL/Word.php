@@ -53,9 +53,7 @@ final class Word extends AbstractVisitor
             }
         }
 
-        $wordEscaped = preg_replace('/([\\\'"+\-!():#@ ])/', '\\\\$1', $token->getWord());
-
-        return $this->filterResolver->resolve($domain, $wordEscaped);
+        return $this->filterResolver->resolve($domain, $token->getWord());
     }
 
 }

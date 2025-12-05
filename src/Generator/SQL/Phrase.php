@@ -53,9 +53,7 @@ final class Phrase extends AbstractVisitor
             }
         }
 
-        $phraseEscaped = preg_replace("/([\\{$token->getQuote()}])/", '\\\\$1', $token->getPhrase());
-
-        return $this->filterResolver->resolve($domain, $phraseEscaped);
+        return $this->filterResolver->resolve($domain, $token->getPhrase());
     }
 
 }
