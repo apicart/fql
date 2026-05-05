@@ -22,7 +22,8 @@ final class Range extends Token
     public const DATETIME_REGEX = '/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(\.\d{1,9})?Z$/';
 
     public const RELATIVE_DATE_SEPARATOR = '|';
-    public const RELATIVE_DATE_REGEX = '/^(today|week|month|year)(\|(\+|-)?\d+)?$/';
+    public const RELATIVE_DATE_OFFSET_PERIOD_SEPARATOR = ':';
+    public const RELATIVE_DATE_REGEX = '/^(today|week|month|year)(\|(\+|-)?\d+(:(day|week|month|year)s?)?)?$/';
     public const RELATIVE_DATE_TODAY = 'today';
     public const RELATIVE_DATE_WEEK = 'week';
     public const RELATIVE_DATE_MONTH = 'month';
@@ -32,6 +33,17 @@ final class Range extends Token
         self::RELATIVE_DATE_WEEK,
         self::RELATIVE_DATE_MONTH,
         self::RELATIVE_DATE_YEAR,
+    ];
+
+    public const RELATIVE_OFFSET_PERIOD_DAY = 'day';
+    public const RELATIVE_OFFSET_PERIOD_WEEK = 'week';
+    public const RELATIVE_OFFSET_PERIOD_MONTH = 'month';
+    public const RELATIVE_OFFSET_PERIOD_YEAR = 'year';
+    public const RELATIVE_OFFSET_PERIODS = [
+        self::RELATIVE_OFFSET_PERIOD_DAY,
+        self::RELATIVE_OFFSET_PERIOD_WEEK,
+        self::RELATIVE_OFFSET_PERIOD_MONTH,
+        self::RELATIVE_OFFSET_PERIOD_YEAR,
     ];
 
     /**
@@ -110,7 +122,8 @@ final class Range extends Token
     public function getStartDateValue(): ?DateTimeImmutable
     {
         if ($this->isStartInDateFormat()) {
-            return DateTimeImmutable::createFromFormat(self::DATE_FORMAT, $this->getStartValue());
+            $date = DateTimeImmutable::createFromFormat(self::DATE_FORMAT, (string) $this->getStartValue());
+            return $date === false ? null : $date;
         }
 
         return null;
@@ -119,7 +132,8 @@ final class Range extends Token
     public function getStartDateTimeValue(): ?DateTimeImmutable
     {
         if ($this->isStartInDateTimeFormat()) {
-            return DateTimeImmutable::createFromFormat(self::DATETIME_FORMAT, $this->getStartValue());
+            $date = DateTimeImmutable::createFromFormat(self::DATETIME_FORMAT, (string) $this->getStartValue());
+            return $date === false ? null : $date;
         }
 
         return null;
@@ -128,7 +142,7 @@ final class Range extends Token
     public function getStartRelativeDateValue(): ?DateTimeImmutable
     {
         if ($this->isStartInRelativeDateFormat()) {
-            return self::getRelativeDate($this->getStartValue());
+            return self::getRelativeDate((string) $this->getStartValue());
         }
 
         return null;
@@ -146,7 +160,8 @@ final class Range extends Token
     public function getEndDateValue(): ?DateTimeImmutable
     {
         if ($this->isEndInDateFormat()) {
-            return DateTimeImmutable::createFromFormat(self::DATE_FORMAT, $this->getEndValue());
+            $date = DateTimeImmutable::createFromFormat(self::DATE_FORMAT, (string) $this->getEndValue());
+            return $date === false ? null : $date;
         }
 
         return null;
@@ -155,17 +170,18 @@ final class Range extends Token
     public function getEndDateTimeValue(): ?DateTimeImmutable
     {
         if ($this->isEndInDateTimeFormat()) {
-            return DateTimeImmutable::createFromFormat(self::DATETIME_FORMAT, $this->getEndValue());
+            $date = DateTimeImmutable::createFromFormat(self::DATETIME_FORMAT, (string) $this->getEndValue());
+            return $date === false ? null : $date;
         }
 
         return null;
     }
 
-    
+
     public function getEndRelativeDateValue(): ?DateTimeImmutable
     {
         if ($this->isEndInRelativeDateFormat()) {
-            return self::getRelativeDate($this->getEndValue());
+            return self::getRelativeDate((string) $this->getEndValue());
         }
 
         return null;
@@ -227,70 +243,103 @@ final class Range extends Token
 
     public function isStartInDateFormat(): bool
     {
-        return preg_match(self::DATE_REGEX, $this->getStartValue()) === 1;
+        return preg_match(self::DATE_REGEX, (string) $this->getStartValue()) === 1;
     }
 
     public function isStartInDateTimeFormat(): bool
     {
-        return preg_match(self::DATETIME_REGEX, $this->getStartValue()) === 1;
+        return preg_match(self::DATETIME_REGEX, (string) $this->getStartValue()) === 1;
     }
 
     public function isStartInRelativeDateFormat(): bool
     {
-        return preg_match(self::RELATIVE_DATE_REGEX, $this->getStartValue()) === 1;
+        return preg_match(self::RELATIVE_DATE_REGEX, (string) $this->getStartValue()) === 1;
     }
 
     public function isEndInDateFormat(): bool
     {
-        return preg_match(self::DATE_REGEX, $this->getEndValue()) === 1;
+        return preg_match(self::DATE_REGEX, (string) $this->getEndValue()) === 1;
     }
 
     public function isEndInDateTimeFormat(): bool
     {
-        return preg_match(self::DATETIME_REGEX, $this->getEndValue()) === 1;
+        return preg_match(self::DATETIME_REGEX, (string) $this->getEndValue()) === 1;
     }
 
     public function isEndInRelativeDateFormat(): bool
     {
-        return preg_match(self::RELATIVE_DATE_REGEX, $this->getEndValue()) === 1;
+        return preg_match(self::RELATIVE_DATE_REGEX, (string) $this->getEndValue()) === 1;
     }
 
     /**
-     * @return array{base: string, offset: int}|null
+     * @return array{base: string, offset: int, period: string|null}|null
      */
     public static function parseRelativeDateValue(string $value): ?array
     {
-        if (preg_match(self::RELATIVE_DATE_REGEX, $value) === 1) {
-            $parts = explode(self::RELATIVE_DATE_SEPARATOR, $value);
-            $base = $parts[0];
-            $offset = isset($parts[1]) ? (int) $parts[1] : 0;
-
-            return ['base' => $base, 'offset' => $offset];
+        if (preg_match(self::RELATIVE_DATE_REGEX, $value) !== 1) {
+            return null;
         }
 
-        return null;
+        $parts = explode(self::RELATIVE_DATE_SEPARATOR, $value, 2);
+        $base = $parts[0];
+        $offset = 0;
+        $period = null;
+
+        if (isset($parts[1])) {
+            $offsetParts = explode(self::RELATIVE_DATE_OFFSET_PERIOD_SEPARATOR, $parts[1], 2);
+            $offset = (int) $offsetParts[0];
+            $period = isset($offsetParts[1]) ? rtrim($offsetParts[1], 's') : null;
+        }
+
+        return ['base' => $base, 'offset' => $offset, 'period' => $period];
     }
 
 
     public static function getRelativeDate(string $value): ?DateTimeImmutable
     {
         $parsed = self::parseRelativeDateValue($value);
-        if ($parsed !== null) {
-            $base = $parsed['base'];
-            $offset = $parsed['offset'];
-            $date = new DateTimeImmutable('now', new DateTimeZone('UTC'));
-            switch ($base) {
-                case self::RELATIVE_DATE_TODAY:
-                    return $date->modify(($offset >= 0 ? '+' : '') . $offset . ' days');
-                case self::RELATIVE_DATE_WEEK:
-                    return $date->modify('this week')->modify(($offset >= 0 ? '+' : '') . $offset . ' weeks');
-                case self::RELATIVE_DATE_MONTH:
-                    return $date->modify('first day of this month')->modify(($offset >= 0 ? '+' : '') . $offset . ' months');
-                case self::RELATIVE_DATE_YEAR:
-                    return $date->modify('first day of january this year')->modify(($offset >= 0 ? '+' : '') . $offset . ' years');
-            }
+        if ($parsed === null) {
+            return null;
         }
-        return null;
+
+        $base = $parsed['base'];
+        $offset = $parsed['offset'];
+        $period = $parsed['period'] ?? self::getDefaultPeriodForBase($base);
+        $date = new DateTimeImmutable('now', new DateTimeZone('UTC'));
+
+        switch ($base) {
+            case self::RELATIVE_DATE_TODAY:
+                $anchored = $date;
+                break;
+            case self::RELATIVE_DATE_WEEK:
+                $anchored = $date->modify('this week');
+                break;
+            case self::RELATIVE_DATE_MONTH:
+                $anchored = $date->modify('first day of this month');
+                break;
+            case self::RELATIVE_DATE_YEAR:
+                $anchored = $date->modify('first day of january this year');
+                break;
+            default:
+                return null;
+        }
+
+        return $anchored->modify(($offset >= 0 ? '+' : '') . $offset . ' ' . $period . 's');
+    }
+
+    private static function getDefaultPeriodForBase(string $base): string
+    {
+        switch ($base) {
+            case self::RELATIVE_DATE_WEEK:
+                return self::RELATIVE_OFFSET_PERIOD_WEEK;
+            case self::RELATIVE_DATE_MONTH:
+                return self::RELATIVE_OFFSET_PERIOD_MONTH;
+            case self::RELATIVE_DATE_YEAR:
+                return self::RELATIVE_OFFSET_PERIOD_YEAR;
+            case self::RELATIVE_DATE_TODAY:
+            default:
+                return self::RELATIVE_OFFSET_PERIOD_DAY;
+        }
     }
 
     private function ensureValidType(?string $type): void
